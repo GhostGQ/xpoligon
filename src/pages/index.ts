@@ -1,1 +1,1 @@
-export { PolygonEditorPage } from './polygon-editor-page';
+export * from './polygon-editor';

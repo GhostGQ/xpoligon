@@ -1,40 +1,48 @@
 import React from 'react';
 
-export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface ButtonProps {
+  onClick: () => void;
+  children: React.ReactNode;
   variant?: 'primary' | 'secondary' | 'danger' | 'warning';
   size?: 'sm' | 'md' | 'lg';
+  disabled?: boolean;
+  title?: string;
+  className?: string;
 }
 
-const Button: React.FC<ButtonProps> = ({
+const variantStyles = {
+  primary: 'bg-blue-500 hover:bg-blue-600 text-white',
+  secondary: 'bg-gray-500 hover:bg-gray-600 text-white',
+  danger: 'bg-red-500 hover:bg-red-600 text-white',
+  warning: 'bg-orange-500 hover:bg-orange-600 text-white',
+};
+
+const sizeStyles = {
+  sm: 'px-2 py-1 text-sm',
+  md: 'px-3 py-1',
+  lg: 'px-4 py-2 text-lg',
+};
+
+export const Button: React.FC<ButtonProps> = ({
+  onClick,
   children,
   variant = 'primary',
   size = 'md',
+  disabled = false,
+  title,
   className = '',
-  ...props
 }) => {
-  const baseClasses = 'rounded font-medium transition-all disabled:opacity-50';
-  
-  const variantClasses = {
-    primary: 'bg-blue-500 text-white hover:bg-blue-600',
-    secondary: 'bg-gray-500 text-white hover:bg-gray-600',
-    danger: 'bg-red-500 text-white hover:bg-red-600',
-    warning: 'bg-orange-500 text-white hover:bg-orange-600',
-  };
-  
-  const sizeClasses = {
-    sm: 'px-2 py-1 text-sm',
-    md: 'px-3 py-1',
-    lg: 'px-4 py-2 text-lg',
-  };
-  
-  const classes = `${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${className}`;
+  const variantClass = variantStyles[variant];
+  const sizeClass = sizeStyles[size];
   
   return (
-    <button className={classes} {...props}>
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      title={title}
+      className={`${variantClass} ${sizeClass} rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${className}`}
+    >
       {children}
     </button>
   );
 };
-
-export default Button;
