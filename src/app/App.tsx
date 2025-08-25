@@ -1,5 +1,4 @@
 import React from 'react';
-import cameraImageTest from '../shared/assets/camera-test.jpg';
 import { PolygonEditorPage } from '../pages';
 
 export interface AppProps {
@@ -8,8 +7,8 @@ export interface AppProps {
   initialData?: any;
 }
 
-const App: React.FC<AppProps> = ({ cameraImage = cameraImageTest }) => {
-  return <PolygonEditorPage cameraImage={cameraImage} />;
+const App: React.FC<AppProps> = ({ cameraId = 'cam1' }) => {
+  return <PolygonEditorPage cameraId={cameraId} />;
 };
 
 export default App;

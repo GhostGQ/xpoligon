@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useCallback, useState } from 'react';
 import type { Point, ImageInfo, CanvasDimensions } from '../../../shared/types';
 import type { Polygon } from '../../../entities/polygon';
-import type { TableItem } from '../../../entities/table-item';
+import type { Workplace } from '../../../entities/workplace';
 import { getDistance } from '../../../shared/lib';
 import { 
   useCoordinateTransform, 
@@ -21,8 +21,9 @@ interface PolygonCanvasProps {
   setIsDrawing: React.Dispatch<React.SetStateAction<boolean>>;
   selectedPolygon: string | null;
   setSelectedPolygon: React.Dispatch<React.SetStateAction<string | null>>;
-  tableItems: TableItem[];
+  workplaces: Workplace[];
   generateId: () => string;
+  cameraId: string;
 }
 
 interface DragState {
@@ -44,8 +45,9 @@ export const PolygonCanvas: React.FC<PolygonCanvasProps> = ({
   setIsDrawing,
   selectedPolygon,
   setSelectedPolygon,
-  tableItems,
-  generateId
+  workplaces,
+  generateId,
+  cameraId
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [mousePos, setMousePos] = useState<Point>({ x: 0, y: 0 });
@@ -99,7 +101,7 @@ export const PolygonCanvas: React.FC<PolygonCanvasProps> = ({
       polygons: absolutePolygons,
       originalPolygons: polygons,
       selectedPolygonId: selectedPolygon,
-      tableItems
+      workplaces
     });
 
     // Рисуем линию к курсору при рисовании
@@ -109,7 +111,7 @@ export const PolygonCanvas: React.FC<PolygonCanvasProps> = ({
       mousePos,
       isDrawing
     });
-  }, [polygons, isDrawing, mousePos, selectedPolygon, tableItems, backgroundImage, imageInfo, getAbsolutePolygons, canvasDimensions]);
+  }, [polygons, isDrawing, mousePos, selectedPolygon, workplaces, backgroundImage, imageInfo, getAbsolutePolygons, canvasDimensions]);
 
   useEffect(() => {
     draw();
@@ -182,8 +184,9 @@ export const PolygonCanvas: React.FC<PolygonCanvasProps> = ({
       const newPolygon: Polygon = {
         points: [relativePos, relativePos],
         closed: false,
-        linkedItem: null,
-        id: generateId()
+        linkedWorkplace: null,
+        id: generateId(),
+        cameraId
       };
       setPolygons([...polygons, newPolygon]);
       setIsDrawing(true);

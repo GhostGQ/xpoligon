@@ -1,6 +1,6 @@
 import type { Point, ImageInfo, CanvasDimensions } from '../../../shared/types';
 import type { Polygon } from '../../../entities/polygon';
-import type { TableItem } from '../../../entities/table-item';
+import type { Workplace } from '../../../entities/workplace';
 
 interface DrawBackgroundParams {
   ctx: CanvasRenderingContext2D;
@@ -67,16 +67,16 @@ interface DrawPolygonsParams {
   polygons: Array<Polygon & { points: Point[] }>; // абсолютные координаты
   originalPolygons: Polygon[]; // оригинальные полигоны с относительными координатами
   selectedPolygonId: string | null;
-  tableItems: TableItem[];
+  workplaces: Workplace[];
 }
 
-export const drawPolygons = ({ ctx, polygons, originalPolygons, selectedPolygonId, tableItems }: DrawPolygonsParams) => {
+export const drawPolygons = ({ ctx, polygons, originalPolygons, selectedPolygonId, workplaces }: DrawPolygonsParams) => {
   polygons.forEach((polygon, index) => {
     if (polygon.points.length < 2) return;
 
     const originalPolygon = originalPolygons[index];
     const isSelected = selectedPolygonId === originalPolygon.id;
-    const isLinked = originalPolygon.linkedItem !== null;
+    const isLinked = originalPolygon.linkedWorkplace !== null;
 
     // Цвета в зависимости от состояния
     let strokeColor = 'blue';
@@ -117,9 +117,9 @@ export const drawPolygons = ({ ctx, polygons, originalPolygons, selectedPolygonI
     });
 
     // Показываем название связанного элемента
-    if (isLinked && originalPolygon.linkedItem) {
-      const linkedTable = tableItems.find(item => item.id === originalPolygon.linkedItem);
-      if (linkedTable) {
+    if (isLinked && originalPolygon.linkedWorkplace) {
+      const linkedWorkplace = workplaces.find(workplace => workplace.id === originalPolygon.linkedWorkplace);
+      if (linkedWorkplace) {
         const centerX = polygon.points.reduce((sum, p) => sum + p.x, 0) / polygon.points.length;
         const centerY = polygon.points.reduce((sum, p) => sum + p.y, 0) / polygon.points.length;
         
@@ -127,14 +127,14 @@ export const drawPolygons = ({ ctx, polygons, originalPolygons, selectedPolygonI
         ctx.strokeStyle = strokeColor;
         ctx.lineWidth = 2;
         ctx.font = 'bold 12px Arial';
-        const textWidth = ctx.measureText(linkedTable.name).width;
+        const textWidth = ctx.measureText(linkedWorkplace.name).width;
         const padding = 4;
         
         ctx.fillRect(centerX - textWidth/2 - padding, centerY - 8, textWidth + padding*2, 16);
         ctx.strokeRect(centerX - textWidth/2 - padding, centerY - 8, textWidth + padding*2, 16);
         
         ctx.fillStyle = strokeColor;
-        ctx.fillText(linkedTable.name, centerX - textWidth/2, centerY + 3);
+        ctx.fillText(linkedWorkplace.name, centerX - textWidth/2, centerY + 3);
       }
     }
   });
