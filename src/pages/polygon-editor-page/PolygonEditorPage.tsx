@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import type { Point, CameraResponse } from '../../shared/types';
-import type { DragState } from '../../entities/polygon';
-import { useCameraData } from '../../shared/hooks';
-import { usePolygonDrawing } from '../../features/polygon-drawing';
-import { usePolygonLinking } from '../../features/polygon-linking';
-import { PolygonEditorWidget } from '../../widgets/polygon-editor';
-import { TableSidebar } from '../../widgets/table-sidebar';
+import React, {useState, useEffect} from 'react';
+import type {Point, CameraResponse} from '../../shared/types';
+import type {DragState} from '../../entities/polygon';
+import {useCameraData} from '../../shared/hooks';
+import {usePolygonDrawing} from '../../features/polygon-drawing';
+import {usePolygonLinking} from '../../features/polygon-linking';
+import {PolygonEditorWidget} from '../../widgets/polygon-editor';
+import {TableSidebar} from '../../widgets/table-sidebar';
 
 export interface PolygonEditorPageProps {
   cameraId: string;
@@ -13,10 +13,10 @@ export interface PolygonEditorPageProps {
   initialData?: CameraResponse;
 }
 
-const PolygonEditorPage: React.FC<PolygonEditorPageProps> = ({ 
-  cameraId, 
-  cameraImage, 
-  initialData 
+const PolygonEditorPage: React.FC<PolygonEditorPageProps> = ({
+  cameraId,
+  cameraImage,
+  initialData,
 }) => {
   // Использование хука для работы с данными камеры
   const {
@@ -26,24 +26,23 @@ const PolygonEditorPage: React.FC<PolygonEditorPageProps> = ({
     setTableItems,
     isLoading,
     lastSaved,
-    clearStorage,
-  } = useCameraData({ cameraId, initialData });
+  } = useCameraData({cameraId, initialData});
 
   const [isDrawing, setIsDrawing] = useState(false);
   const [selectedPolygon, setSelectedPolygon] = useState<string | null>(null);
-  const [mousePos, setMousePos] = useState<Point>({ x: 0, y: 0 });
-  
+  const [mousePos, setMousePos] = useState<Point>({x: 0, y: 0});
+
   const [dragState, setDragState] = useState<DragState>({
     isDragging: false,
     dragType: null,
     polygonIndex: -1,
     pointIndex: -1,
-    startPos: { x: 0, y: 0 },
+    startPos: {x: 0, y: 0},
     startTime: 0,
   });
 
   // Хуки для управления полигонами
-  const { handleMouseDown, handleMouseMove, handleMouseUp, handleContextMenu } =
+  const {handleMouseDown, handleMouseMove, handleMouseUp, handleContextMenu} =
     usePolygonDrawing({
       polygons,
       setPolygons,
@@ -56,7 +55,7 @@ const PolygonEditorPage: React.FC<PolygonEditorPageProps> = ({
       mousePos,
     });
 
-  const { linkPolygonToItem, unlinkItem, deletePolygon, clearAll } =
+  const {linkPolygonToItem, unlinkItem, deletePolygon, clearAll} =
     usePolygonLinking({
       polygons,
       setPolygons,
@@ -64,6 +63,7 @@ const PolygonEditorPage: React.FC<PolygonEditorPageProps> = ({
       setTableItems,
       selectedPolygon,
       setSelectedPolygon,
+      cameraId,
     });
 
   // Обработка клавиш Delete и Backspace
@@ -71,7 +71,7 @@ const PolygonEditorPage: React.FC<PolygonEditorPageProps> = ({
     const handleKeyPress = (e: KeyboardEvent) => {
       if ((e.key === 'Delete' || e.key === 'Backspace') && selectedPolygon) {
         e.preventDefault();
-        deletePolygon(selectedPolygon);
+        deletePolygon(cameraId, selectedPolygon);
       }
     };
 
@@ -86,7 +86,7 @@ const PolygonEditorPage: React.FC<PolygonEditorPageProps> = ({
       const rect = canvas.getBoundingClientRect();
       const scaleX = canvas.width / rect.width;
       const scaleY = canvas.height / rect.height;
-      
+
       setMousePos({
         x: (e.clientX - rect.left) * scaleX,
         y: (e.clientY - rect.top) * scaleY,
@@ -97,7 +97,7 @@ const PolygonEditorPage: React.FC<PolygonEditorPageProps> = ({
 
   const handleDeleteSelected = () => {
     if (selectedPolygon) {
-      deletePolygon(selectedPolygon);
+      deletePolygon(cameraId, selectedPolygon);
     }
   };
 
@@ -119,9 +119,8 @@ const PolygonEditorPage: React.FC<PolygonEditorPageProps> = ({
         onContextMenu={handleContextMenu}
         onDeleteSelected={handleDeleteSelected}
         onClearAll={clearAll}
-        onClearStorage={clearStorage}
       />
-      
+
       <TableSidebar
         tableItems={tableItems}
         selectedPolygon={selectedPolygon}

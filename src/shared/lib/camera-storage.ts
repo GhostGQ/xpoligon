@@ -29,7 +29,7 @@ export class CameraStorageService {
     tableItems: TableItem[]
   ): void {
     const allData = this.getStorageData();
-    
+
     allData[cameraId] = {
       cameraId,
       polygons: polygons.filter(p => p.closed), // Сохраняем только завершенные полигоны
@@ -67,6 +67,20 @@ export class CameraStorageService {
     console.log(`🗑️ Данные камеры ${cameraId} удалены из localStorage`);
   }
 
+  static deleteCameraPoligon(cameraId: string, polygonId: string): void {
+    const allData = this.getStorageData();
+    const cameraData = allData[cameraId];
+    if (!cameraData) return;
+
+    cameraData.polygons = cameraData.polygons.filter(p => p.id !== polygonId);
+    cameraData.tableItems = cameraData.tableItems.map(item =>
+      item.linkedPolygon === polygonId ? { ...item, linkedPolygon: null } : item
+    );
+
+    this.saveStorageData(allData);
+    console.log(`🗑️ Полигон ${polygonId} удален из данных камеры ${cameraId}`);
+  }
+
   static getAllCameraIds(): string[] {
     const allData = this.getStorageData();
     return Object.keys(allData);
@@ -75,7 +89,7 @@ export class CameraStorageService {
   static getCameraDataSize(cameraId: string): number {
     const cameraData = this.loadCameraData(cameraId);
     if (!cameraData) return 0;
-    
+
     try {
       return new Blob([JSON.stringify(cameraData)]).size;
     } catch {

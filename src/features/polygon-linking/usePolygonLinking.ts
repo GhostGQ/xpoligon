@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 import type { Polygon } from '../../entities/polygon';
 import type { TableItem } from '../../entities/table';
+import { CameraStorageService } from '@/shared/lib';
 
 export interface UsePolygonLinkingProps {
   polygons: Polygon[];
@@ -9,6 +10,7 @@ export interface UsePolygonLinkingProps {
   setTableItems: React.Dispatch<React.SetStateAction<TableItem[]>>;
   selectedPolygon: string | null;
   setSelectedPolygon: React.Dispatch<React.SetStateAction<string | null>>;
+  cameraId: string;
 }
 
 export const usePolygonLinking = ({
@@ -17,6 +19,7 @@ export const usePolygonLinking = ({
   setTableItems,
   selectedPolygon,
   setSelectedPolygon,
+  cameraId
 }: UsePolygonLinkingProps) => {
   const linkPolygonToItem = useCallback(
     (itemId: string) => {
@@ -78,9 +81,9 @@ export const usePolygonLinking = ({
   );
 
   const deletePolygon = useCallback(
-    (polygonId: string) => {
+    (cameraId: string, polygonId: string) => {
       setPolygons(prev => prev.filter(p => p.id !== polygonId));
-
+      CameraStorageService.deleteCameraPoligon(cameraId, polygonId);
       // Отвязываем от элементов списка
       setTableItems(prev =>
         prev.map(item =>
@@ -96,6 +99,7 @@ export const usePolygonLinking = ({
   );
 
   const clearAll = useCallback(() => {
+    CameraStorageService.clearCameraData(cameraId);
     setPolygons([]);
     setSelectedPolygon(null);
     setTableItems(prev =>

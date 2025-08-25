@@ -21,7 +21,6 @@ export interface PolygonEditorWidgetProps {
   onContextMenu: (e: React.MouseEvent) => void;
   onDeleteSelected: () => void;
   onClearAll: () => void;
-  onClearStorage?: () => void;
 }
 
 const PolygonEditorWidget: React.FC<PolygonEditorWidgetProps> = ({
@@ -40,7 +39,6 @@ const PolygonEditorWidget: React.FC<PolygonEditorWidgetProps> = ({
   onContextMenu,
   onDeleteSelected,
   onClearAll,
-  onClearStorage,
 }) => {
   const [canvasDimensions, setCanvasDimensions] = useState<Dimensions>({
     width: 800,
@@ -132,16 +130,6 @@ const PolygonEditorWidget: React.FC<PolygonEditorWidgetProps> = ({
           <Button onClick={onClearAll} variant='danger'>
             Очистить все
           </Button>
-          {onClearStorage && (
-            <Button
-              onClick={onClearStorage}
-              variant='secondary'
-              size='sm'
-              title='Очистить сохраненные данные'
-            >
-              🗑️ Очистить кэш
-            </Button>
-          )}
         </div>
       </div>
 
