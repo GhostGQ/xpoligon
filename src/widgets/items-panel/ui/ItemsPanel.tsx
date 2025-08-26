@@ -1,4 +1,3 @@
-import React from 'react';
 import type {Workplace} from '../../../entities/workplace';
 import type {Polygon} from '../../../entities/polygon';
 import type {ImageInfo} from '../../../shared/types';

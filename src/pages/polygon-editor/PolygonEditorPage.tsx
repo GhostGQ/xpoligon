@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import {useState, useEffect} from 'react';
 import type {Polygon} from '../../entities/polygon';
 import type {PolygonEditorProps} from '../../shared/types';
 import {

@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useCallback, useState } from 'react';
+import { useRef, useEffect, useCallback, useState } from 'react';
 import type { Point, ImageInfo, CanvasDimensions } from '../../../shared/types';
 import type { Polygon } from '../../../entities/polygon';
 import type { Workplace } from '../../../entities/workplace';
