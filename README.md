@@ -61,11 +61,11 @@ const MyApp = () => {
 };
 ```
 
-### Advanced usage with API
+### Advanced usage with server data
 
 ```tsx
-import React, { useState, useEffect } from 'react';
-import { PolygonEditorPage, cameraApi } from 'polygon-editor';
+import { useState, useEffect } from 'react';
+import { PolygonEditorPage } from 'polygon-editor';
 import type { PolygonEditorData } from 'polygon-editor';
 
 const CameraEditor = ({ cameraId }) => {
@@ -74,30 +74,38 @@ const CameraEditor = ({ cameraId }) => {
 
   useEffect(() => {
     const loadData = async () => {
-      const [camera, workplaces, polygons] = await Promise.all([
-        cameraApi.getCameraById(cameraId),
-        cameraApi.getWorkplacesByCamera(cameraId),
-        cameraApi.getPolygonsByCamera(cameraId),
-      ]);
-      
-      setData({ camera, workplaces, polygons });
-      setLoading(false);
+      setLoading(true);
+      try {
+        // Load data from your API
+        const [camera, workplaces, polygons] = await Promise.all([
+          fetch(`/api/cameras/${cameraId}`).then(r => r.json()),
+          fetch(`/api/cameras/${cameraId}/workplaces`).then(r => r.json()),
+          fetch(`/api/cameras/${cameraId}/polygons`).then(r => r.json()),
+        ]);
+        
+        setData({ camera, workplaces, polygons });
+      } catch (error) {
+        console.error('Failed to load data:', error);
+      } finally {
+        setLoading(false);
+      }
     };
 
     loadData();
   }, [cameraId]);
 
-  if (!data) return <div>Loading...</div>;
+  if (!data) return null;
 
   return (
     <PolygonEditorPage
       data={data}
       loading={loading}
       onSave={async (saveData) => {
-        await cameraApi.savePolygonsForCamera(
-          saveData.cameraId,
-          saveData.regions
-        );
+        await fetch(`/api/cameras/${saveData.cameraId}/polygons`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(saveData),
+        });
       }}
       onError={(error) => console.error(error)}
     />

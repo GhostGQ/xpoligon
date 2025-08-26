@@ -32,6 +32,3 @@ export { usePolygonLinking } from './features/polygon-linking';
 // Экспорт виджетов (если нужно кастомизировать)
 export { PolygonCanvas } from './widgets/polygon-canvas';
 export { ItemsPanel } from './widgets/items-panel';
-
-// Экспорт API (для мок-данных или расширения)
-export { cameraApi } from './shared/api';
