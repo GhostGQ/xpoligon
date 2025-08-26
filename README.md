@@ -1,26 +1,26 @@
 # Polygon Editor Library
 
-Библиотека для создания и редактирования полигональных областей на изображениях с привязкой к рабочим местам.
+A library for creating and editing polygonal regions on images with workplace linking.
 
-## Основные возможности
+## Features
 
-- ✅ Рисование полигонов на изображении
-- ✅ Привязка полигонов к рабочим местам  
-- ✅ Относительная система координат (0-1)
-- ✅ Пиксельные координаты для сервера
-- ✅ Автосохранение изменений
-- ✅ TypeScript поддержка
-- ✅ Feature-Sliced Design архитектура
+- ✅ Draw polygons on images
+- ✅ Link polygons to workplaces  
+- ✅ Relative coordinate system (0-1)
+- ✅ Pixel coordinates for server
+- ✅ Autosave changes
+- ✅ TypeScript support
+- ✅ Feature-Sliced Design architecture
 
-## Установка
+## Installation
 
 ```bash
 npm install polygon-editor
 ```
 
-## Использование
+## Usage
 
-### Базовое использование
+### Basic usage
 
 ```tsx
 import { PolygonEditorPage } from 'polygon-editor';
@@ -30,24 +30,24 @@ const MyApp = () => {
   const data: PolygonEditorData = {
     camera: {
       id: 'cam1',
-      name: 'Основная камера',
+      name: 'Main camera',
       screenshot: '/path/to/image.jpg',
       isActive: true,
     },
     workplaces: [
-      { id: 'wp1', name: 'Стол №1' },
-      { id: 'wp2', name: 'Стол №2' },
+      { id: 'wp1', name: 'Table #1' },
+      { id: 'wp2', name: 'Table #2' },
     ],
-    polygons: [], // Существующие полигоны
+    polygons: [], // Existing polygons
   };
 
   const handleSave = (saveData) => {
-    console.log('Сохранение данных:', saveData);
-    // Отправить на сервер
+    console.log('Save data:', saveData);
+    // Send to server
   };
 
   const handleChange = (polygons) => {
-    console.log('Полигоны изменились:', polygons);
+    console.log('Polygons changed:', polygons);
   };
 
   return (
@@ -61,7 +61,7 @@ const MyApp = () => {
 };
 ```
 
-### Продвинутое использование с API
+### Advanced usage with API
 
 ```tsx
 import React, { useState, useEffect } from 'react';
@@ -111,12 +111,12 @@ const CameraEditor = ({ cameraId }) => {
 
 ```typescript
 interface PolygonEditorProps {
-  data: PolygonEditorData;           // Данные камеры, рабочих мест и полигонов
-  loading?: boolean;                 // Состояние загрузки
-  onSave?: (data: SaveData) => void; // Callback для сохранения
-  onChange?: (polygons: Polygon[]) => void; // Callback при изменении
-  onError?: (error: string) => void; // Callback при ошибках
-  autoSaveDelay?: number;           // Задержка автосохранения (мс)
+  data: PolygonEditorData;           // Camera, workplaces, and polygons data
+  loading?: boolean;                 // Loading state
+  onSave?: (data: SaveData) => void; // Save callback
+  onChange?: (polygons: Polygon[]) => void; // Change callback
+  onError?: (error: string) => void; // Error callback
+  autoSaveDelay?: number;            // Autosave delay (ms)
 }
 ```
 
@@ -124,19 +124,19 @@ interface PolygonEditorProps {
 
 ```typescript
 interface PolygonEditorData {
-  camera: Camera;           // Данные камеры с изображением
-  workplaces: Workplace[];  // Список рабочих мест
-  polygons: Polygon[];      // Существующие полигоны
+  camera: Camera;           // Camera data with image
+  workplaces: Workplace[];  // List of workplaces
+  polygons: Polygon[];      // Existing polygons
 }
 ```
 
-### Типы данных
+### Data types
 
 ```typescript
 interface Camera {
   id: string;
   name: string;
-  screenshot: string;  // URL изображения
+  screenshot: string;  // Image URL
   isActive: boolean;
 }
 
@@ -147,8 +147,8 @@ interface Workplace {
 
 interface Polygon {
   id: string;
-  points: Point[];          // Относительные координаты (0-1)
-  linkedWorkplace?: string; // ID связанного рабочего места
+  points: Point[];          // Relative coordinates (0-1)
+  linkedWorkplace?: string; // Linked workplace ID
   closed: boolean;
 }
 
@@ -160,7 +160,7 @@ interface Point {
 
 ### SaveData
 
-При сохранении передаются данные в формате:
+When saving, data is passed in the following format:
 
 ```typescript
 interface SaveData {
@@ -173,68 +173,68 @@ interface SaveData {
     id: string;
     linkedWorkplace?: string;
     relativeCoordinates: Point[];  // 0-1
-    pixelCoordinates: Point[];     // пиксели
+    pixelCoordinates: Point[];     // pixels
     closed: boolean;
   }>;
   timestamp: string;
 }
 ```
 
-## Горячие клавиши
+## Hotkeys
 
-- `Delete` / `Backspace` - Удалить выбранный полигон
-- `Escape` - Отменить рисование
-- `Click` - Добавить точку
-- `Double Click` - Завершить полигон
+- `Delete` / `Backspace` - Delete selected polygon
+- `Escape` - Cancel drawing
+- `Click` - Add point
+- `Double Click` - Finish polygon
 
-## Особенности
+## Features
 
-### Система координат
+### Coordinate system
 
-Библиотека использует две системы координат:
+The library uses two coordinate systems:
 
-1. **Относительные координаты (0-1)** - для внутренней работы и масштабирования
-2. **Пиксельные координаты** - для отправки на сервер
+1. **Relative coordinates (0-1)** - for internal work and scaling
+2. **Pixel coordinates** - for sending to the server
 
-### Автосохранение
+### Autosave
 
-Изменения автоматически сохраняются через заданную задержку. По умолчанию - 1000мс.
+Changes are automatically saved after the specified delay. Default is 1000ms.
 
-### Привязка к рабочим местам
+### Workplace linking
 
-Полигоны можно связывать с рабочими местами из списка. Связь отображается цветом и подписью.
+Polygons can be linked to workplaces from the list. The link is shown by color and label.
 
-## Архитектура
+## Architecture
 
-Библиотека построена по принципам Feature-Sliced Design:
+The library is built using Feature-Sliced Design principles:
 
 ```
 src/
-├── app/           # Конфигурация приложения
-├── pages/         # Страницы (главный компонент)
-├── widgets/       # Композитные UI блоки
-├── features/      # Бизнес-логика
-├── entities/      # Модели данных
-└── shared/        # Переиспользуемый код
+├── app/           # App configuration
+├── pages/         # Pages (main component)
+├── widgets/       # Composite UI blocks
+├── features/      # Business logic
+├── entities/      # Data models
+└── shared/        # Reusable code
 ```
 
-## Кастомизация
+## Customization
 
-### Стили
+### Styles
 
-Библиотека использует Tailwind CSS. Можно переопределить стили через CSS классы.
+The library uses Tailwind CSS. You can override styles via CSS classes.
 
-### Компоненты
+### Components
 
-Все внутренние компоненты экспортируются и могут использоваться отдельно:
+All internal components are exported and can be used separately:
 
 ```tsx
 import { PolygonCanvas, ItemsPanel } from 'polygon-editor';
 ```
 
-### Утилиты
+### Utilities
 
-Экспортируются хуки и утилиты:
+Hooks and utilities are exported:
 
 ```tsx
 import { 
@@ -245,6 +245,6 @@ import {
 } from 'polygon-editor';
 ```
 
-## Лицензия
+## License
 
 MIT
