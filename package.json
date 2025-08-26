@@ -1,67 +1,52 @@
 {
-  "name": "xpoligon",
-  "version": "1.1.1",
-  "description": "React-based polygon editor for image regions with workplace linking",
-  "main": "dist/index.cjs.js",
-  "module": "dist/index.es.js",
-  "types": "dist/index.d.ts",
-  "files": [
-    "dist",
-    "README.md",
-    "src/styles.css"
-  ],
+  "name": "xpoligon-demo",
+  "version": "1.0.0",
+  "description": "Interactive demo for XPoligon polygon editor library",
+  "private": true,
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
-    "build:css": "npx tailwindcss -i src/styles.css -o dist/index.css --minify",
-    "build:lib": "vite build --mode library && npx tsc -p tsconfig.lib.json && npm run build:css",
-    "lint": "eslint .",
+    "build": "vite build",
     "preview": "vite preview",
-    "prepublishOnly": "npm run build:lib"
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
-  "keywords": [
-    "react",
-    "polygon",
-    "editor",
-    "image",
-    "typescript",
-    "canvas",
-    "workplace",
-    "regions"
-  ],
-  "author": "Your Name",
-  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/GhostGQ/xpoligon.git"
   },
+  "keywords": [
+    "polygon",
+    "editor",
+    "demo",
+    "react",
+    "typescript",
+    "canvas"
+  ],
+  "author": "GhostGQ",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/GhostGQ/xpoligon/issues"
   },
-  "homepage": "https://github.com/GhostGQ/xpoligon#readme",
-  "peerDependencies": {
-    "react": ">=18.0.0",
-    "react-dom": ">=18.0.0"
+  "homepage": "https://ghostgq.github.io/xpoligon/",
+  "dependencies": {
+    "@tailwindcss/vite": "^4.1.12",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^7.8.2",
+    "tailwindcss": "^4.1.12",
+    "xpoligon": "^1.1.1"
   },
-  "dependencies": {},
   "devDependencies": {
-    "@eslint/js": "^9.33.0",
-    "@types/node": "^24.3.0",
-    "@types/react": "^19.1.10",
-    "@types/react-dom": "^19.1.7",
-    "@vitejs/plugin-react": "^5.0.0",
-    "autoprefixer": "^10.4.14",
-    "eslint": "^9.33.0",
-    "eslint-plugin-react-hooks": "^5.2.0",
-    "eslint-plugin-react-refresh": "^0.4.20",
-    "globals": "^16.3.0",
-    "postcss": "^8.4.24",
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1",
-    "tailwindcss": "^3.3.0",
-    "typescript": "~5.8.3",
-    "typescript-eslint": "^8.39.1",
-    "vite": "^7.1.2"
+    "@types/react": "^18.2.43",
+    "@types/react-dom": "^18.2.17",
+    "@types/react-router-dom": "^5.3.3",
+    "@typescript-eslint/eslint-plugin": "^6.14.0",
+    "@typescript-eslint/parser": "^6.14.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "eslint": "^8.55.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.5",
+    "typescript": "^5.2.2",
+    "vite": "^5.0.8"
   }
 }

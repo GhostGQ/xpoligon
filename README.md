@@ -1,295 +1,151 @@
-# Polygon Editor Library
+# 🎯 XPoligon Demo
 
-A library for creating and editing polygonal regions on images with workplace linking.
+Интерактивный редактор полигонов для камер наблюдения
 
-## Features
+![XPoligon Demo](https://img.shields.io/badge/demo-live-brightgreen)
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white)
+![React](https://img.shields.io/badge/React-20232A?logo=react&logoColor=61DAFB)
+![Tailwind](https://img.shields.io/badge/Tailwind_CSS-38B2AC?logo=tailwind-css&logoColor=white)
 
-- ✅ Draw polygons on images
-- ✅ Link polygons to workplaces  
-- ✅ Relative coordinate system (0-1)
-- ✅ Pixel coordinates for server
-- ✅ Auto-save functionality
-- ✅ Loading states support
-- ✅ TypeScript support
-- ✅ Feature-Sliced Design architecture
+## 🚀 Демо
 
-## Installation
+[Попробовать online](https://ghostgq.github.io/xpoligon/)
+
+## 📋 Описание
+
+XPoligon Demo - это интерактивное веб-приложение для демонстрации возможностей библиотеки XPoligon. Позволяет создавать и редактировать полигоны на изображениях камер наблюдения.
+
+### ✨ Основные возможности
+
+- 📐 **Точное позиционирование** - Относительная система координат (0-1)
+- 🏢 **Привязка рабочих мест** - Связывание полигонов с рабочими местами
+- 💾 **Автосохранение** - Все изменения сохраняются в localStorage
+- 🎨 **TypeScript поддержка** - Полная типизация API
+- 📱 **Адаптивный дизайн** - Работает на всех устройствах
+- ⚡ **Высокая производительность** - Оптимизированный Canvas рендеринг
+
+### 🎯 Как использовать
+
+1. **Создание полигонов:**
+   - Кликайте по изображению для создания точек
+   - Замыкайте полигон кликом рядом с первой точкой
+   - Правый клик на точке для её удаления
+
+2. **Редактирование:**
+   - Кликните на полигон для выбора
+   - Перетаскивайте точки для изменения формы
+   - Delete/Backspace для удаления
+
+3. **Привязка рабочих мест:**
+   - Выберите полигон кликом
+   - Выберите рабочее место в панели
+   - Сохранение происходит автоматически
+
+## 🛠️ Технологии
+
+- **Frontend:** React 18 + TypeScript
+- **Стилизация:** Tailwind CSS v4
+- **Рендеринг:** Canvas API
+- **Роутинг:** React Router v7
+- **Сборка:** Vite 5
+- **Деплой:** GitHub Actions + GitHub Pages
+
+## 🏗️ Установка и запуск
+
+### Предварительные требования
+
+- Node.js 18+ 
+- npm или yarn
+
+### Локальная разработка
+
+```bash
+# Клонировать репозиторий
+git clone https://github.com/GhostGQ/xpoligon.git
+cd xpoligon
+
+# Установить зависимости
+npm install
+
+# Запустить dev сервер
+npm run dev
+
+# Открыть http://localhost:3000/xpoligon/
+```
+
+### Сборка для продакшена
+
+```bash
+# Собрать проект
+npm run build
+
+# Предварительный просмотр
+npm run preview
+```
+
+## 📁 Структура проекта
+
+```
+src/
+├── components/           # React компоненты
+│   ├── WelcomePage.tsx  # Приветственная страница
+│   ├── CameraList.tsx   # Список камер
+│   └── PolygonEditor.tsx # Редактор полигонов
+├── assets/              # Статические файлы
+│   └── camera-test.jpg  # Тестовое изображение камеры
+├── index.css           # Глобальные стили
+├── App.tsx             # Главный компонент
+└── main.tsx            # Точка входа
+```
+
+## 🚀 Деплой
+
+Проект автоматически деплоится на GitHub Pages при пуше в ветку `demo` с помощью GitHub Actions.
+
+### Настройка GitHub Pages
+
+1. Перейдите в Settings → Pages
+2. Выберите Source: GitHub Actions
+3. Workflow будет запускаться автоматически
+
+## 📦 Библиотека XPoligon
+
+Этот проект демонстрирует возможности библиотеки [XPoligon](https://www.npmjs.com/package/xpoligon):
 
 ```bash
 npm install xpoligon
 ```
 
-### Styles Setup
-
-The library uses Tailwind CSS for styling. You need to import the compiled CSS file:
-
 ```tsx
-// Import the library styles
+import { PolygonEditorPage } from 'xpoligon';
 import 'xpoligon/dist/index.css';
 
-// Then use the component
-import { PolygonEditorPage } from 'xpoligon';
-```
-
-**Important:** The library includes its own compiled CSS with all necessary Tailwind styles. You don't need to have Tailwind CSS installed in your project unless you want to customize the styles.
-
-## Usage
-
-### Basic usage
-
-```tsx
-// Import styles and component
-import 'xpoligon/dist/index.css';
-import { PolygonEditorPage } from 'xpoligon';
-import type { PolygonEditorData } from 'xpoligon';
-
-const MyApp = () => {
-  const data: PolygonEditorData = {
-    camera: {
-      id: 'cam1',
-      name: 'Main camera',
-      screenshot: '/path/to/image.jpg',
-      isActive: true,
-    },
-    workplaces: [
-      { id: 'wp1', name: 'Table #1' },
-      { id: 'wp2', name: 'Table #2' },
-    ],
-    polygons: [], // Existing polygons
-  };
-
-  const handleSave = (saveData) => {
-    console.log('Save data:', saveData);
-    // Send to server
-  };
-
-  const handleChange = (polygons) => {
-    console.log('Polygons changed:', polygons);
-  };
-
+function App() {
   return (
     <PolygonEditorPage
-      data={data}
+      data={editorData}
       onSave={handleSave}
       onChange={handleChange}
-      autoSaveDelay={1500}
+      enableLocalStorage={true}
     />
   );
-};
-```
-
-### Usage with loading state
-
-```tsx
-// Import styles first
-import 'xpoligon/dist/index.css';
-import { useState, useEffect } from 'react';
-import { PolygonEditorPage } from 'xpoligon';
-import type { PolygonEditorData } from 'xpoligon';
-
-const CameraEditor = ({ cameraId }) => {
-  const [data, setData] = useState<PolygonEditorData | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const loadData = async () => {
-      setLoading(true);
-      try {
-        // Load data from your server
-        const response = await fetch(`/api/cameras/${cameraId}/editor-data`);
-        const editorData = await response.json();
-        setData(editorData);
-      } catch (error) {
-        console.error('Failed to load data:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadData();
-  }, [cameraId]);
-
-  if (!data) return <div>Loading...</div>;
-
-  return (
-    <PolygonEditorPage
-      data={data}
-      loading={loading}
-      onSave={async (saveData) => {
-        // Send data to your server
-        await fetch(`/api/cameras/${saveData.cameraId}/polygons`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(saveData),
-        });
-      }}
-      onError={(error) => console.error(error)}
-    />
-  );
-};
-```
-
-## API
-
-### PolygonEditorProps
-
-```typescript
-interface PolygonEditorProps {
-  data: PolygonEditorData;           // Camera, workplaces, and polygons data
-  loading?: boolean;                 // Loading state
-  onSave?: (data: SaveData) => void; // Save callback
-  onChange?: (polygons: Polygon[]) => void; // Change callback
-  onError?: (error: string) => void; // Error callback
-  autoSaveDelay?: number;            // Autosave delay (ms)
 }
 ```
 
-### PolygonEditorData
+## 📄 Лицензия
 
-```typescript
-interface PolygonEditorData {
-  camera: Camera;           // Camera data with image
-  workplaces: Workplace[];  // List of workplaces
-  polygons: Polygon[];      // Existing polygons
-}
-```
+MIT © [GhostGQ](https://github.com/GhostGQ)
 
-### Data types
+## 🤝 Вклад в проект
 
-```typescript
-interface Camera {
-  id: string;
-  name: string;
-  screenshot: string;  // Image URL
-  isActive: boolean;
-}
+Приветствуются pull requests и issues!
 
-interface Workplace {
-  id: string;
-  name: string;
-}
+1. Fork проект
+2. Создайте feature ветку (`git checkout -b feature/AmazingFeature`)
+3. Commit изменения (`git commit -m 'Add some AmazingFeature'`)
+4. Push в ветку (`git push origin feature/AmazingFeature`)
+5. Откройте Pull Request
 
-interface Polygon {
-  id: string;
-  points: Point[];          // Relative coordinates (0-1)
-  linkedWorkplace?: string; // Linked workplace ID
-  closed: boolean;
-}
+---
 
-interface Point {
-  x: number; // 0-1
-  y: number; // 0-1
-}
-```
-
-### SaveData
-
-When saving, data is passed in the following format:
-
-```typescript
-interface SaveData {
-  cameraId: string;
-  imageSize: {
-    width: number;
-    height: number;
-  };
-  regions: Array<{
-    id: string;
-    linkedWorkplace?: string;
-    relativeCoordinates: Point[];  // 0-1
-    pixelCoordinates: Point[];     // pixels
-    closed: boolean;
-  }>;
-  timestamp: string;
-}
-```
-
-## Hotkeys
-
-- `Delete` / `Backspace` - Delete selected polygon
-- `Escape` - Cancel drawing
-- `Click` - Add point
-- `Double Click` - Finish polygon
-
-## Features
-
-### Coordinate system
-
-The library uses two coordinate systems:
-
-1. **Relative coordinates (0-1)** - for internal work and scaling
-2. **Pixel coordinates** - for sending to the server
-
-### Autosave
-
-Changes are automatically saved after the specified delay. Default is 1000ms.
-
-### Workplace linking
-
-Polygons can be linked to workplaces from the list. The link is shown by color and label.
-
-## Architecture
-
-The library is built using Feature-Sliced Design principles:
-
-```
-src/
-├── app/           # App configuration
-├── pages/         # Pages (main component)
-├── widgets/       # Composite UI blocks
-├── features/      # Business logic
-├── entities/      # Data models
-└── shared/        # Reusable code
-```
-
-## Customization
-
-### Styles
-
-The library comes with compiled Tailwind CSS styles. To customize the appearance:
-
-1. **Override CSS classes**: The library uses CSS classes like `.polygon-editor-button`, `.polygon-editor-canvas`, etc. You can override them in your own CSS:
-
-```css
-/* Override button styles */
-.polygon-editor-button-primary {
-  background-color: #your-color !important;
-}
-
-/* Override canvas border */
-.polygon-editor-canvas {
-  border-color: #your-border-color !important;
-}
-```
-
-2. **Custom CSS file**: Import your custom styles after the library styles:
-
-```tsx
-import 'xpoligon/dist/index.css';
-import './my-custom-styles.css'; // Your overrides
-```
-
-### Components
-
-All internal components are exported and can be used separately:
-
-```tsx
-import { PolygonCanvas, ItemsPanel } from 'xpoligon';
-```
-
-### Utilities
-
-Hooks and utilities are exported:
-
-```tsx
-import { 
-  useImageProcessing,
-  useCanvasDimensions,
-  usePolygonChanges,
-  generateId 
-} from 'xpoligon';
-```
-
-## License
-
-MIT
+Сделано с ❤️ для сообщества разработчиков
