@@ -16,7 +16,7 @@ A library for creating and editing polygonal regions on images with workplace li
 ## Installation
 
 ```bash
-npm install polygon-editor
+npm install xpoligon
 ```
 
 ## Usage
@@ -24,8 +24,8 @@ npm install polygon-editor
 ### Basic usage
 
 ```tsx
-import { PolygonEditorPage } from 'polygon-editor';
-import type { PolygonEditorData } from 'polygon-editor';
+import { PolygonEditorPage } from 'xpoligon';
+import type { PolygonEditorData } from 'xpoligon';
 
 const MyApp = () => {
   const data: PolygonEditorData = {
@@ -66,8 +66,8 @@ const MyApp = () => {
 
 ```tsx
 import { useState, useEffect } from 'react';
-import { PolygonEditorPage } from 'polygon-editor';
-import type { PolygonEditorData } from 'polygon-editor';
+import { PolygonEditorPage } from 'xpoligon';
+import type { PolygonEditorData } from 'xpoligon';
 
 const CameraEditor = ({ cameraId }) => {
   const [data, setData] = useState<PolygonEditorData | null>(null);
@@ -235,7 +235,7 @@ The library uses Tailwind CSS. You can override styles via CSS classes.
 All internal components are exported and can be used separately:
 
 ```tsx
-import { PolygonCanvas, ItemsPanel } from 'polygon-editor';
+import { PolygonCanvas, ItemsPanel } from 'xpoligon';
 ```
 
 ### Utilities
@@ -248,7 +248,7 @@ import {
   useCanvasDimensions,
   usePolygonChanges,
   generateId 
-} from 'polygon-editor';
+} from 'xpoligon';
 ```
 
 ## License
