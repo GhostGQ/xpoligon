@@ -34,4 +34,9 @@ export interface PolygonEditorProps {
   onChange?: (polygons: Polygon[]) => void; // вызывается при любом изменении полигонов
   onError?: (error: string) => void;
   autoSaveDelay?: number; // задержка автосохранения в мс, по умолчанию 1000
+  
+  // Настройки localStorage
+  enableLocalStorage?: boolean; // включить сохранение в localStorage, по умолчанию true
+  localStorageKey?: string; // ключ для localStorage, по умолчанию 'polygon-editor'
+  localStorageDelay?: number; // задержка сохранения в localStorage в мс, по умолчанию 500
 }
