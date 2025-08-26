@@ -4,6 +4,7 @@ import type { Polygon } from '../../entities/polygon';
 interface UseLocalStorageProps {
   polygons: Polygon[];
   setPolygons: React.Dispatch<React.SetStateAction<Polygon[]>>;
+  initialPolygons: Polygon[]; // полигоны из пропсов
   cameraId: string;
   enabled?: boolean;
   storageKey?: string;
@@ -13,6 +14,7 @@ interface UseLocalStorageProps {
 export const useLocalStorage = ({
   polygons,
   setPolygons,
+  initialPolygons,
   cameraId,
   enabled = true,
   storageKey = 'polygon-editor',
@@ -20,7 +22,8 @@ export const useLocalStorage = ({
 }: UseLocalStorageProps) => {
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const isInitialLoad = useRef(true);
-  const hasLoaded = useRef(false);
+  const hasLoadedFromStorage = useRef(false);
+  const lastCameraId = useRef(cameraId);
 
   // Функция для сохранения в localStorage
   const saveToLocalStorage = (polygonsToSave: Polygon[]) => {
@@ -77,24 +80,59 @@ export const useLocalStorage = ({
     }
   };
 
-  // Загрузка данных при первом рендере или смене камеры
+  // Загрузка данных при смене камеры или первом рендере
   useEffect(() => {
-    if (!cameraId || hasLoaded.current) return;
-    
-    const savedPolygons = loadFromLocalStorage();
-    if (savedPolygons && savedPolygons.length > 0) {
-      setPolygons(savedPolygons);
-    }
-    
-    hasLoaded.current = true;
-    isInitialLoad.current = false;
-  }, [cameraId, enabled, setPolygons, storageKey]);
+    if (!cameraId) return;
 
-  // Автосохранение с задержкой
-  useEffect(() => {
-    // Пропускаем первую загрузку (когда полигоны загружаются из localStorage или props)
-    if (isInitialLoad.current) {
+    // Если камера изменилась, сбрасываем флаги
+    if (lastCameraId.current !== cameraId) {
+      hasLoadedFromStorage.current = false;
+      isInitialLoad.current = true;
+      lastCameraId.current = cameraId;
+    }
+
+    // Сначала сохраняем данные из пропсов в localStorage (если они есть)
+    if (initialPolygons && initialPolygons.length > 0) {
+      console.debug(`Saving ${initialPolygons.length} polygons from props to localStorage for camera ${cameraId}`);
+      saveToLocalStorage(initialPolygons);
+    }
+
+    // Затем загружаем данные из localStorage в редактор
+    if (!hasLoadedFromStorage.current) {
+      const savedPolygons = loadFromLocalStorage();
+      if (savedPolygons && savedPolygons.length > 0) {
+        console.debug(`Loading ${savedPolygons.length} polygons from localStorage to editor for camera ${cameraId}`);
+        setPolygons(savedPolygons);
+      } else if (initialPolygons && initialPolygons.length > 0) {
+        // Если в localStorage ничего нет, используем данные из пропсов
+        console.debug(`No localStorage data, using ${initialPolygons.length} polygons from props for camera ${cameraId}`);
+        setPolygons(initialPolygons);
+      }
+
+      hasLoadedFromStorage.current = true;
       isInitialLoad.current = false;
+    }
+  }, [cameraId, initialPolygons, enabled, setPolygons, storageKey]);
+
+  // Отдельный эффект для синхронизации пропсов с localStorage
+  useEffect(() => {
+    if (!enabled || !cameraId || !initialPolygons) return;
+
+    // Сохраняем данные из пропсов в localStorage при их изменении
+    if (initialPolygons.length > 0) {
+      console.debug(`Syncing ${initialPolygons.length} polygons from props to localStorage for camera ${cameraId}`);
+      saveToLocalStorage(initialPolygons);
+      
+      // Также обновляем состояние редактора, если это новые данные
+      setPolygons(initialPolygons);
+    }
+  }, [initialPolygons, cameraId, enabled, setPolygons, storageKey]);
+
+  // Автосохранение изменений из редактора
+  // Автосохранение изменений из редактора
+  useEffect(() => {
+    // Пропускаем первую загрузку
+    if (isInitialLoad.current) {
       return;
     }
 
@@ -115,12 +153,6 @@ export const useLocalStorage = ({
       }
     };
   }, [polygons, cameraId, enabled, storageKey, autoSaveDelay]);
-
-  // Сброс состояния при изменении камеры
-  useEffect(() => {
-    hasLoaded.current = false;
-    isInitialLoad.current = true;
-  }, [cameraId]);
 
   return {
     saveToLocalStorage,

@@ -40,6 +40,7 @@ export const PolygonEditorPage: React.FC<PolygonEditorProps> = ({
   const { clearLocalStorage } = useLocalStorage({
     polygons,
     setPolygons,
+    initialPolygons,
     cameraId: camera.id,
     enabled: enableLocalStorage,
     storageKey: localStorageKey,
@@ -56,11 +57,6 @@ export const PolygonEditorPage: React.FC<PolygonEditorProps> = ({
     onSave,
     autoSaveDelay,
   });
-
-  // Обновляем локальное состояние при изменении входных данных
-  useEffect(() => {
-    setPolygons(initialPolygons);
-  }, [initialPolygons]);
 
   const {linkPolygonToItem, unlinkItem} = usePolygonLinking({
     polygons,
