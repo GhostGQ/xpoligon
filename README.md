@@ -1,116 +1,116 @@
 # 🎯 XPoligon Demo
 
-Интерактивный редактор полигонов для камер наблюдения
+Interactive polygon editor for surveillance cameras
 
 ![XPoligon Demo](https://img.shields.io/badge/demo-live-brightgreen)
 ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white)
 ![React](https://img.shields.io/badge/React-20232A?logo=react&logoColor=61DAFB)
 ![Tailwind](https://img.shields.io/badge/Tailwind_CSS-38B2AC?logo=tailwind-css&logoColor=white)
 
-## 🚀 Демо
+## 🚀 Demo
 
-[Попробовать online](https://ghostgq.github.io/xpoligon/)
+[Try it online](https://ghostgq.github.io/xpoligon/)
 
-## 📋 Описание
+## 📋 Description
 
-XPoligon Demo - это интерактивное веб-приложение для демонстрации возможностей библиотеки XPoligon. Позволяет создавать и редактировать полигоны на изображениях камер наблюдения.
+XPoligon Demo is an interactive web application showcasing the capabilities of the XPoligon library. It allows you to create and edit polygons on surveillance camera images.
 
-### ✨ Основные возможности
+### ✨ Key Features
 
-- 📐 **Точное позиционирование** - Относительная система координат (0-1)
-- 🏢 **Привязка рабочих мест** - Связывание полигонов с рабочими местами
-- 💾 **Автосохранение** - Все изменения сохраняются в localStorage
-- 🎨 **TypeScript поддержка** - Полная типизация API
-- 📱 **Адаптивный дизайн** - Работает на всех устройствах
-- ⚡ **Высокая производительность** - Оптимизированный Canvas рендеринг
+- 📐 **Precise positioning** - Relative coordinate system (0-1)
+- 🏢 **Workplace linking** - Connect polygons to specific workplaces
+- 💾 **Auto-save** - All changes are automatically saved to localStorage
+- 🎨 **TypeScript support** - Full API type safety
+- 📱 **Responsive design** - Works on all devices
+- ⚡ **High performance** - Optimized Canvas rendering
 
-### 🎯 Как использовать
+### 🎯 How to use
 
-1. **Создание полигонов:**
-   - Кликайте по изображению для создания точек
-   - Замыкайте полигон кликом рядом с первой точкой
-   - Правый клик на точке для её удаления
+1. **Creating polygons:**
+   - Click on the image to create points
+   - Close the polygon by clicking near the first point
+   - Right-click on a point to remove it
 
-2. **Редактирование:**
-   - Кликните на полигон для выбора
-   - Перетаскивайте точки для изменения формы
-   - Delete/Backspace для удаления
+2. **Editing:**
+   - Click on a polygon to select it
+   - Drag points to change the shape
+   - Press Delete/Backspace to remove selected polygon
 
-3. **Привязка рабочих мест:**
-   - Выберите полигон кликом
-   - Выберите рабочее место в панели
-   - Сохранение происходит автоматически
+3. **Linking workplaces:**
+   - Select a polygon by clicking on it
+   - Choose a workplace from the panel
+   - Changes are saved automatically
 
-## 🛠️ Технологии
+## 🛠️ Technologies
 
 - **Frontend:** React 18 + TypeScript
-- **Стилизация:** Tailwind CSS v4
-- **Рендеринг:** Canvas API
-- **Роутинг:** React Router v7
-- **Сборка:** Vite 5
-- **Деплой:** GitHub Actions + GitHub Pages
+- **Styling:** Tailwind CSS v4
+- **Rendering:** Canvas API
+- **Routing:** React Router v7
+- **Build:** Vite 5
+- **Deploy:** GitHub Actions + GitHub Pages
 
-## 🏗️ Установка и запуск
+## 🏗️ Installation and Setup
 
-### Предварительные требования
+### Prerequisites
 
 - Node.js 18+ 
-- npm или yarn
+- npm or yarn
 
-### Локальная разработка
+### Local Development
 
 ```bash
-# Клонировать репозиторий
+# Clone the repository
 git clone https://github.com/GhostGQ/xpoligon.git
 cd xpoligon
 
-# Установить зависимости
+# Install dependencies
 npm install
 
-# Запустить dev сервер
+# Start dev server
 npm run dev
 
-# Открыть http://localhost:3000/xpoligon/
+# Open http://localhost:3000/xpoligon/
 ```
 
-### Сборка для продакшена
+### Production Build
 
 ```bash
-# Собрать проект
+# Build the project
 npm run build
 
-# Предварительный просмотр
+# Preview build
 npm run preview
 ```
 
-## 📁 Структура проекта
+## 📁 Project Structure
 
 ```
 src/
-├── components/           # React компоненты
-│   ├── WelcomePage.tsx  # Приветственная страница
-│   ├── CameraList.tsx   # Список камер
-│   └── PolygonEditor.tsx # Редактор полигонов
-├── assets/              # Статические файлы
-│   └── camera-test.jpg  # Тестовое изображение камеры
-├── index.css           # Глобальные стили
-├── App.tsx             # Главный компонент
-└── main.tsx            # Точка входа
+├── components/           # React components
+│   ├── WelcomePage.tsx  # Welcome page
+│   ├── CameraList.tsx   # Camera list
+│   └── PolygonEditor.tsx # Polygon editor
+├── assets/              # Static files
+│   └── camera-test.jpg  # Test camera image
+├── index.css           # Global styles
+├── App.tsx             # Main component
+└── main.tsx            # Entry point
 ```
 
-## 🚀 Деплой
+## 🚀 Deployment
 
-Проект автоматически деплоится на GitHub Pages при пуше в ветку `demo` с помощью GitHub Actions.
+The project is automatically deployed to GitHub Pages when pushing to the `demo` branch using GitHub Actions.
 
-### Настройка GitHub Pages
+### GitHub Pages Setup
 
-1. Перейдите в Settings → Pages
-2. Выберите Source: GitHub Actions
-3. Workflow будет запускаться автоматически
+1. Go to Settings → Pages
+2. Select Source: GitHub Actions
+3. Workflow will run automatically
 
-## 📦 Библиотека XPoligon
+## 📦 XPoligon Library
 
-Этот проект демонстрирует возможности библиотеки [XPoligon](https://www.npmjs.com/package/xpoligon):
+This project demonstrates the capabilities of the [XPoligon](https://www.npmjs.com/package/xpoligon) library:
 
 ```bash
 npm install xpoligon
@@ -132,20 +132,20 @@ function App() {
 }
 ```
 
-## 📄 Лицензия
+## 📄 License
 
 MIT © [GhostGQ](https://github.com/GhostGQ)
 
-## 🤝 Вклад в проект
+## 🤝 Contributing
 
-Приветствуются pull requests и issues!
+Pull requests and issues are welcome!
 
-1. Fork проект
-2. Создайте feature ветку (`git checkout -b feature/AmazingFeature`)
-3. Commit изменения (`git commit -m 'Add some AmazingFeature'`)
-4. Push в ветку (`git push origin feature/AmazingFeature`)
-5. Откройте Pull Request
+1. Fork the project
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
 ---
 
-Сделано с ❤️ для сообщества разработчиков
+Made with ❤️ for the developer community
