@@ -21,40 +21,25 @@ npm install xpoligon
 
 ### Styles Setup
 
-The library requires Tailwind CSS. You have two options:
+The library uses Tailwind CSS for styling. You need to import the compiled CSS file:
 
-#### Option 1: Use with existing Tailwind CSS project
-If you already have Tailwind CSS configured in your project, the components will work out of the box.
-
-#### Option 2: Import library styles
 ```tsx
-// Import library styles in your main CSS file or component
+// Import the library styles
 import 'xpoligon/dist/index.css';
+
+// Then use the component
+import { PolygonEditorPage } from 'xpoligon';
 ```
 
-#### Option 3: Configure Tailwind CSS
-If you don't have Tailwind CSS, install and configure it:
-```bash
-npm install -D tailwindcss postcss autoprefixer
-npx tailwindcss init -p
-```
-
-Add to your `tailwind.config.js`:
-```js
-module.exports = {
-  content: [
-    "./src/**/*.{js,jsx,ts,tsx}",
-    "./node_modules/xpoligon/dist/**/*.js"
-  ],
-  // ...
-}
-```
+**Important:** The library includes its own compiled CSS with all necessary Tailwind styles. You don't need to have Tailwind CSS installed in your project unless you want to customize the styles.
 
 ## Usage
 
 ### Basic usage
 
 ```tsx
+// Import styles and component
+import 'xpoligon/dist/index.css';
 import { PolygonEditorPage } from 'xpoligon';
 import type { PolygonEditorData } from 'xpoligon';
 
@@ -96,6 +81,8 @@ const MyApp = () => {
 ### Usage with loading state
 
 ```tsx
+// Import styles first
+import 'xpoligon/dist/index.css';
 import { useState, useEffect } from 'react';
 import { PolygonEditorPage } from 'xpoligon';
 import type { PolygonEditorData } from 'xpoligon';
@@ -259,7 +246,28 @@ src/
 
 ### Styles
 
-The library uses Tailwind CSS. You can override styles via CSS classes.
+The library comes with compiled Tailwind CSS styles. To customize the appearance:
+
+1. **Override CSS classes**: The library uses CSS classes like `.polygon-editor-button`, `.polygon-editor-canvas`, etc. You can override them in your own CSS:
+
+```css
+/* Override button styles */
+.polygon-editor-button-primary {
+  background-color: #your-color !important;
+}
+
+/* Override canvas border */
+.polygon-editor-canvas {
+  border-color: #your-border-color !important;
+}
+```
+
+2. **Custom CSS file**: Import your custom styles after the library styles:
+
+```tsx
+import 'xpoligon/dist/index.css';
+import './my-custom-styles.css'; // Your overrides
+```
 
 ### Components
 

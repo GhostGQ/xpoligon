@@ -30,7 +30,7 @@ export interface PolygonEditorSaveData {
 export interface PolygonEditorProps {
   data: PolygonEditorData;
   loading?: boolean;
-  onSave: (data: PolygonEditorSaveData) => void | Promise<void>;
+  onSave?: (data: PolygonEditorSaveData) => void | Promise<void>;
   onChange?: (polygons: Polygon[]) => void; // вызывается при любом изменении полигонов
   onError?: (error: string) => void;
   autoSaveDelay?: number; // задержка автосохранения в мс, по умолчанию 1000
