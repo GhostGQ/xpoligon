@@ -8,7 +8,8 @@ A library for creating and editing polygonal regions on images with workplace li
 - ✅ Link polygons to workplaces  
 - ✅ Relative coordinate system (0-1)
 - ✅ Pixel coordinates for server
-- ✅ Autosave changes
+- ✅ Auto-save functionality
+- ✅ Loading states support
 - ✅ TypeScript support
 - ✅ Feature-Sliced Design architecture
 
@@ -61,7 +62,7 @@ const MyApp = () => {
 };
 ```
 
-### Advanced usage with server data
+### Usage with loading state
 
 ```tsx
 import { useState, useEffect } from 'react';
@@ -76,14 +77,10 @@ const CameraEditor = ({ cameraId }) => {
     const loadData = async () => {
       setLoading(true);
       try {
-        // Load data from your API
-        const [camera, workplaces, polygons] = await Promise.all([
-          fetch(`/api/cameras/${cameraId}`).then(r => r.json()),
-          fetch(`/api/cameras/${cameraId}/workplaces`).then(r => r.json()),
-          fetch(`/api/cameras/${cameraId}/polygons`).then(r => r.json()),
-        ]);
-        
-        setData({ camera, workplaces, polygons });
+        // Load data from your server
+        const response = await fetch(`/api/cameras/${cameraId}/editor-data`);
+        const editorData = await response.json();
+        setData(editorData);
       } catch (error) {
         console.error('Failed to load data:', error);
       } finally {
@@ -94,13 +91,14 @@ const CameraEditor = ({ cameraId }) => {
     loadData();
   }, [cameraId]);
 
-  if (!data) return null;
+  if (!data) return <div>Loading...</div>;
 
   return (
     <PolygonEditorPage
       data={data}
       loading={loading}
       onSave={async (saveData) => {
+        // Send data to your server
         await fetch(`/api/cameras/${saveData.cameraId}/polygons`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
