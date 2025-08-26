@@ -29,6 +29,7 @@ export default defineConfig(({ mode }) => {
     // Конфигурация для сборки библиотеки
     ...(isLibrary && {
       build: {
+        emptyOutDir: false, // Не очищать dist полностью
         lib: {
           entry: path.resolve(__dirname, 'src/index.ts'),
           name: 'PolygonEditor',
