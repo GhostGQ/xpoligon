@@ -1,5 +1,5 @@
 {
-  "name": "polygon-editor",
+  "name": "xpoligon",
   "version": "1.0.0",
   "description": "React-based polygon editor for image regions with workplace linking",
   "main": "dist/index.js",
@@ -7,8 +7,7 @@
   "types": "dist/index.d.ts",
   "files": [
     "dist",
-    "README.md",
-    "POLYGON_EDITOR_LIBRARY.md"
+    "README.md"
   ],
   "type": "module",
   "scripts": {
@@ -33,20 +32,18 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/yourusername/polygon-editor.git"
+    "url": "git+https://github.com/GhostGQ/xpoligon.git"
   },
   "bugs": {
-    "url": "https://github.com/yourusername/polygon-editor/issues"
+    "url": "https://github.com/GhostGQ/xpoligon/issues"
   },
-  "homepage": "https://github.com/yourusername/polygon-editor#readme",
+  "homepage": "https://github.com/GhostGQ/xpoligon#readme",
   "peerDependencies": {
     "react": ">=18.0.0",
     "react-dom": ">=18.0.0"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.12",
-    "konva": "^9.3.22",
-    "react-konva": "^19.0.7",
     "tailwindcss": "^4.1.12"
   },
   "devDependencies": {
