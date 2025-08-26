@@ -1,60 +1,51 @@
-import React, {useState, useEffect} from 'react';
+import {useState, useEffect} from 'react';
 import type {Polygon} from '../../entities/polygon';
+import type {PolygonEditorProps} from '../../shared/types';
 import {
   generateId,
   useImageProcessing,
   useCanvasDimensions,
-  useCameraData,
-  useAutoSave,
+  usePolygonChanges,
 } from '../../shared/lib';
 import {usePolygonLinking} from '../../features/polygon-linking';
 import {PolygonCanvas} from '../../widgets/polygon-canvas';
 import {ItemsPanel} from '../../widgets/items-panel';
 import {Button, Loading} from '../../shared/ui';
 
-interface PolygonEditorPageProps {
-  cameraId: string;
-}
-
-export const PolygonEditorPage: React.FC<PolygonEditorPageProps> = ({
-  cameraId,
+export const PolygonEditorPage: React.FC<PolygonEditorProps> = ({
+  data,
+  loading = false,
+  onSave,
+  onChange,
+  onError,
+  autoSaveDelay = 1000,
 }) => {
   const canvasDimensions = useCanvasDimensions();
-
-  // Загружаем данные камеры
-  const {
-    camera,
-    workplaces,
-    polygons: initialPolygons,
-    loading,
-    error,
-    savePolygons,
-  } = useCameraData({cameraId});
+  const {camera, workplaces, polygons: initialPolygons} = data;
 
   const {backgroundImage, imageInfo} = useImageProcessing({
-    cameraImage: camera?.screenshot,
+    cameraImage: camera.screenshot,
     canvasDimensions,
   });
 
-  const [polygons, setPolygons] = useState<Polygon[]>([]);
+  const [polygons, setPolygons] = useState<Polygon[]>(initialPolygons);
   const [isDrawing, setIsDrawing] = useState(false);
   const [selectedPolygon, setSelectedPolygon] = useState<string | null>(null);
 
-  // Автосохранение полигонов
-  useAutoSave({
+  // Отслеживание изменений полигонов и автосохранение
+  usePolygonChanges({
     polygons,
-    cameraId,
-    savePolygons,
+    cameraId: camera.id,
     imageWidth: imageInfo?.width,
     imageHeight: imageInfo?.height,
-    delay: 1000,
+    onChange,
+    onSave,
+    autoSaveDelay,
   });
 
-  // Инициализируем полигоны при загрузке данных
+  // Обновляем локальное состояние при изменении входных данных
   useEffect(() => {
-    if (initialPolygons.length > 0) {
-      setPolygons(initialPolygons);
-    }
+    setPolygons(initialPolygons);
   }, [initialPolygons]);
 
   const {linkPolygonToItem, unlinkItem} = usePolygonLinking({
@@ -80,16 +71,12 @@ export const PolygonEditorPage: React.FC<PolygonEditorPageProps> = ({
     const updatedPolygons = polygons.filter(p => p.id !== polygonId);
     setPolygons(updatedPolygons);
     setSelectedPolygon(null);
-
-    // Автосохранение сработает автоматически через useAutoSave
   };
 
   const clearAll = () => {
     setPolygons([]);
     setIsDrawing(false);
     setSelectedPolygon(null);
-
-    // Автосохранение сработает автоматически через useAutoSave
   };
 
   const handleLinkPolygonToItem = (workplaceId: string) => {
@@ -98,47 +85,39 @@ export const PolygonEditorPage: React.FC<PolygonEditorPageProps> = ({
     }
   };
 
-  const handleSavePolygons = () => {
-    // Ручное сохранение (автосохранение и так работает)
-    console.log('Полигоны сохранены вручную для камеры:', cameraId);
+  const handleManualSave = () => {
+    if (onSave && imageInfo?.width && imageInfo?.height) {
+      try {
+        const saveData = {
+          cameraId: camera.id,
+          imageSize: {
+            width: imageInfo.width,
+            height: imageInfo.height,
+          },
+          regions: polygons.map(p => ({
+            id: p.id,
+            linkedWorkplace: p.linkedWorkplace,
+            relativeCoordinates: p.points,
+            pixelCoordinates: p.points.map(point => ({
+              x: Math.round(point.x * imageInfo.width),
+              y: Math.round(point.y * imageInfo.height),
+            })),
+            closed: p.closed,
+          })),
+          timestamp: new Date().toISOString(),
+        };
+        onSave(saveData);
+      } catch (error) {
+        onError?.('Ошибка при сохранении полигонов');
+        console.error('Save error:', error);
+      }
+    }
   };
 
   if (loading) {
     return (
-      <div className='flex gap-4 p-4 h-screen overflow-hidden'>
-        <div className='flex flex-col gap-4 flex-1'>
-          <div className='bg-gray-100 p-3 rounded-lg'>
-            <h2 className='text-lg font-bold mb-1'>Загрузка камеры...</h2>
-            <div className='text-sm text-gray-600'>
-              Получение данных с сервера
-            </div>
-          </div>
-          <div className='border-2 border-gray-300 rounded-lg overflow-hidden flex-1 flex items-center justify-center'>
-            <Loading message='Загрузка изображения камеры...' />
-          </div>
-        </div>
-        <div className='w-80 bg-gray-50 p-4 rounded-lg flex flex-col'>
-          <h3 className='text-lg font-bold mb-4'>Рабочие места</h3>
-          <div className='flex-1 flex items-center justify-center'>
-            <Loading message='Загрузка списка...' />
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className='flex items-center justify-center h-screen'>
-        <div className='text-lg text-red-600'>Ошибка: {error}</div>
-      </div>
-    );
-  }
-
-  if (!camera) {
-    return (
-      <div className='flex items-center justify-center h-screen'>
-        <div className='text-lg'>Камера не найдена</div>
+      <div className="flex items-center justify-center h-screen">
+        <Loading />
       </div>
     );
   }
@@ -163,11 +142,11 @@ export const PolygonEditorPage: React.FC<PolygonEditorPageProps> = ({
           </div>
           <div className='flex gap-2'>
             <Button
-              onClick={handleSavePolygons}
+              onClick={handleManualSave}
               variant='primary'
               disabled={polygons.length === 0}
             >
-              Сохранить полигоны
+              Сохранить сейчас
             </Button>
             {selectedPolygon && (
               <Button
@@ -197,7 +176,7 @@ export const PolygonEditorPage: React.FC<PolygonEditorPageProps> = ({
             setSelectedPolygon={setSelectedPolygon}
             workplaces={workplaces}
             generateId={generateId}
-            cameraId={cameraId}
+            cameraId={camera.id}
           />
         </div>
 

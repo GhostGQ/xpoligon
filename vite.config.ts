@@ -8,18 +8,46 @@ import { fileURLToPath } from 'url'
 const __filename = fileURLToPath((import.meta as any).url)
 const __dirname = path.dirname(__filename)
 
-export default defineConfig({
-  plugins: [react(), tailwindcss()],
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, 'src'),
-      '@app': path.resolve(__dirname, 'src', 'app'),
-      '@shared': path.resolve(__dirname, 'src', 'shared'),
-      '@entities': path.resolve(__dirname, 'src', 'entities'),
-      '@features': path.resolve(__dirname, 'src', 'features'),
-      '@widgets': path.resolve(__dirname, 'src', 'widgets'),
-      '@pages': path.resolve(__dirname, 'src', 'pages'),
-      '@processes': path.resolve(__dirname, 'src', 'processes'),
+export default defineConfig(({ mode }) => {
+  const isLibrary = mode === 'library';
+
+  return {
+    plugins: [react(), tailwindcss()],
+    resolve: {
+      alias: {
+        '@': path.resolve(__dirname, 'src'),
+        '@app': path.resolve(__dirname, 'src', 'app'),
+        '@shared': path.resolve(__dirname, 'src', 'shared'),
+        '@entities': path.resolve(__dirname, 'src', 'entities'),
+        '@features': path.resolve(__dirname, 'src', 'features'),
+        '@widgets': path.resolve(__dirname, 'src', 'widgets'),
+        '@pages': path.resolve(__dirname, 'src', 'pages'),
+        '@processes': path.resolve(__dirname, 'src', 'processes'),
+      },
     },
-  },
-})
+    
+    // Конфигурация для сборки библиотеки
+    ...(isLibrary && {
+      build: {
+        lib: {
+          entry: path.resolve(__dirname, 'src/index.ts'),
+          name: 'PolygonEditor',
+          fileName: (format) => `index.${format}.js`,
+          formats: ['es', 'cjs'],
+        },
+        rollupOptions: {
+          external: ['react', 'react-dom', 'react/jsx-runtime'],
+          output: {
+            globals: {
+              react: 'React',
+              'react-dom': 'ReactDOM',
+              'react/jsx-runtime': 'React',
+            },
+          },
+        },
+        sourcemap: true,
+        minify: 'esbuild',
+      },
+    }),
+  };
+});

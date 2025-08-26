@@ -1,20 +1,49 @@
 {
   "name": "xpoligon",
-  "private": true,
-  "version": "0.1.0",
+  "version": "1.0.0",
+  "description": "React-based polygon editor for image regions with workplace linking",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "build:lib": "vite build --mode library",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "prepublishOnly": "npm run build:lib"
+  },
+  "keywords": [
+    "react",
+    "polygon",
+    "editor",
+    "image",
+    "typescript",
+    "canvas",
+    "workplace",
+    "regions"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GhostGQ/xpoligon.git"
+  },
+  "bugs": {
+    "url": "https://github.com/GhostGQ/xpoligon/issues"
+  },
+  "homepage": "https://github.com/GhostGQ/xpoligon#readme",
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.12",
-    "konva": "^9.3.22",
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1",
-    "react-konva": "^19.0.7",
     "tailwindcss": "^4.1.12"
   },
   "devDependencies": {
@@ -27,6 +56,8 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^16.3.0",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.39.1",
     "vite": "^7.1.2"
