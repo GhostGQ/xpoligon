@@ -19,6 +19,37 @@ A library for creating and editing polygonal regions on images with workplace li
 npm install xpoligon
 ```
 
+### Styles Setup
+
+The library requires Tailwind CSS. You have two options:
+
+#### Option 1: Use with existing Tailwind CSS project
+If you already have Tailwind CSS configured in your project, the components will work out of the box.
+
+#### Option 2: Import library styles
+```tsx
+// Import library styles in your main CSS file or component
+import 'xpoligon/dist/index.css';
+```
+
+#### Option 3: Configure Tailwind CSS
+If you don't have Tailwind CSS, install and configure it:
+```bash
+npm install -D tailwindcss postcss autoprefixer
+npx tailwindcss init -p
+```
+
+Add to your `tailwind.config.js`:
+```js
+module.exports = {
+  content: [
+    "./src/**/*.{js,jsx,ts,tsx}",
+    "./node_modules/xpoligon/dist/**/*.js"
+  ],
+  // ...
+}
+```
+
 ## Usage
 
 ### Basic usage

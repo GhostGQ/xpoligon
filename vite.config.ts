@@ -44,6 +44,11 @@ export default defineConfig(({ mode }) => {
               'react-dom': 'ReactDOM',
               'react/jsx-runtime': 'React',
             },
+            // Включить CSS в сборку
+            assetFileNames: (assetInfo) => {
+              if (assetInfo.name === 'style.css') return 'index.css';
+              return assetInfo.name!;
+            },
           },
         },
         sourcemap: true,
