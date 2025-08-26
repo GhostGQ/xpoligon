@@ -1,17 +1,28 @@
-# Polygon Editor Library
+# XPoligon React Library
 
-A library for creating and editing polygonal regions on images with workplace linking.
+Interactive polygon editor for surveillance cameras
 
-## Features
+![XPoligon Demo](https://img.shields.io/badge/demo-live-brightgreen)
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white)
+![React](https://img.shields.io/badge/React-20232A?logo=react&logoColor=61DAFB)
+![Tailwind](https://img.shields.io/badge/Tailwind_CSS-38B2AC?logo=tailwind-css&logoColor=white)
 
-- ✅ Draw polygons on images
-- ✅ Link polygons to workplaces  
-- ✅ Relative coordinate system (0-1)
-- ✅ Pixel coordinates for server
-- ✅ Auto-save functionality
-- ✅ Loading states support
-- ✅ TypeScript support
-- ✅ Feature-Sliced Design architecture
+## 🚀 Demo
+
+### [Try it online](https://ghostgq.github.io/xpoligon/)
+
+## 📋 Description
+
+XPoligon Demo is an interactive web application showcasing the capabilities of the XPoligon library. It allows you to create and edit polygons on surveillance camera images.
+
+### ✨ Key Features
+
+- 📐 **Precise positioning** - Relative coordinate system (0-1)
+- 🏢 **Workplace linking** - Connect polygons to specific workplaces
+- 💾 **Auto-save** - All changes are automatically saved to localStorage
+- 🎨 **TypeScript support** - Full API type safety
+- 📱 **Responsive design** - Works on all devices
+- ⚡ **High performance** - Optimized Canvas rendering
 
 ## Installation
 
