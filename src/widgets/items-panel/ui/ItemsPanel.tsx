@@ -25,16 +25,16 @@ export const ItemsPanel: React.FC<ItemsPanelProps> = ({
 
   return (
     <div className='w-80 bg-gray-50 p-4 rounded-lg flex flex-col'>
-      <h3 className='text-lg font-bold mb-4'>Рабочие места</h3>
+      <h3 className='text-lg font-bold mb-4'>Workplaces</h3>
 
       {selectedPolygon && (
         <div className='mb-4 p-3 bg-orange-100 rounded border-l-4 border-orange-500'>
           <div className='text-sm font-medium text-orange-800'>
-            Полигон выбран
+            Polygon selected
           </div>
           <div className='text-xs text-orange-600'>
-            Кликните по рабочему месту для привязки, Delete для удаления или ПКМ вне
-            полигона для отмены выделения
+            Click on a workplace to link, Delete to remove, or right-click
+            outside the polygon to cancel selection
           </div>
         </div>
       )}
@@ -42,7 +42,7 @@ export const ItemsPanel: React.FC<ItemsPanelProps> = ({
       <div className='space-y-2 flex-1 overflow-y-auto'>
         {workplaces.map(workplace => {
           const isLinked = isWorkplaceLinked(workplace.id);
-          
+
           return (
             <div
               key={workplace.id}
@@ -63,11 +63,13 @@ export const ItemsPanel: React.FC<ItemsPanelProps> = ({
                 <div>
                   <div className='font-medium'>{workplace.name}</div>
                   {workplace.description && (
-                    <div className='text-sm text-gray-500'>{workplace.description}</div>
+                    <div className='text-sm text-gray-500'>
+                      {workplace.description}
+                    </div>
                   )}
                   {isLinked && (
                     <div className='text-sm text-green-600 flex items-center gap-2'>
-                      <span>✓ Привязан к полигону</span>
+                      <span>✓ Linked to polygon</span>
                       <button
                         onClick={e => {
                           e.stopPropagation();
@@ -93,18 +95,18 @@ export const ItemsPanel: React.FC<ItemsPanelProps> = ({
 
       <div className='mt-4 pt-4 border-t text-xs text-gray-500'>
         <div className='space-y-1'>
-          <div>🟠 Оранжевый - выбранный полигон</div>
-          <div>🟢 Зеленый - привязанный полигон</div>
-          <div>🔵 Синий - обычный полигон</div>
+          <div>🟠 Orange - selected polygon</div>
+          <div>🟢 Green - linked polygon</div>
+          <div>🔵 Blue - regular polygon</div>
         </div>
         <div className='mt-2 pt-2 border-t'>
           <div>
-            <strong>Управление:</strong>
+            <strong>Controls:</strong>
           </div>
-          <div>• ЛКМ - создать/выбрать/редактировать</div>
-          <div>• ПКМ по точке - удалить точку</div>
-          <div>• ПКМ вне полигона - снять выделение</div>
-          <div>• Delete/Backspace - удалить полигон</div>
+          <div>• Left-click - create/select/edit</div>
+          <div>• Right-click on a point - remove point</div>
+          <div>• Right-click outside the polygon - cancel selection</div>
+          <div>• Delete/Backspace - remove polygon</div>
         </div>
       </div>
     </div>

@@ -23,6 +23,7 @@ export const PolygonEditorPage: React.FC<PolygonEditorProps> = ({
   enableLocalStorage = true,
   localStorageKey = 'polygon-editor',
   localStorageDelay = 500,
+  debug = false,
 }) => {
   const canvasDimensions = useCanvasDimensions();
   const {camera, workplaces, polygons: initialPolygons} = data;
@@ -37,7 +38,7 @@ export const PolygonEditorPage: React.FC<PolygonEditorProps> = ({
   const [selectedPolygon, setSelectedPolygon] = useState<string | null>(null);
 
   // Интеграция с localStorage
-  const { clearLocalStorage } = useLocalStorage({
+  const {clearLocalStorage} = useLocalStorage({
     polygons,
     setPolygons,
     initialPolygons,
@@ -122,14 +123,16 @@ export const PolygonEditorPage: React.FC<PolygonEditorProps> = ({
         onSave(saveData);
       } catch (error) {
         onError?.('Ошибка при сохранении полигонов');
-        console.error('Save error:', error);
+        if (debug) {
+          console.error('Save error:', error);
+        }
       }
     }
   };
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-screen">
+      <div className='flex items-center justify-center h-screen'>
         <Loading />
       </div>
     );
@@ -144,11 +147,11 @@ export const PolygonEditorPage: React.FC<PolygonEditorProps> = ({
             <h2 className='text-lg font-bold mb-1'>{camera.name}</h2>
             <div className='text-sm text-gray-600'>
               {backgroundImage
-                ? `Загружено изображение ${imageInfo?.width}×${imageInfo?.height}px`
-                : 'Режим сетки (нет изображения)'}
+                ? `Loaded image ${imageInfo?.width}×${imageInfo?.height}px`
+                : 'Grid mode (no image)'}
               {imageInfo && (
                 <span className='ml-2 text-blue-600'>
-                  Масштаб: {(imageInfo.scale * 100).toFixed(1)}%
+                  Scale: {(imageInfo.scale * 100).toFixed(1)}%
                 </span>
               )}
             </div>
@@ -159,7 +162,7 @@ export const PolygonEditorPage: React.FC<PolygonEditorProps> = ({
               variant='primary'
               disabled={polygons.length === 0}
             >
-              Сохранить сейчас
+              Save now
             </Button>
             {selectedPolygon && (
               <Button
@@ -167,11 +170,11 @@ export const PolygonEditorPage: React.FC<PolygonEditorProps> = ({
                 variant='warning'
                 title='Delete/Backspace'
               >
-                Удалить выбранный
+                Delete selected
               </Button>
             )}
             <Button onClick={clearAll} variant='danger'>
-              Очистить все
+              Clear all
             </Button>
           </div>
         </div>
@@ -194,12 +197,12 @@ export const PolygonEditorPage: React.FC<PolygonEditorProps> = ({
         </div>
 
         <div className='text-sm text-gray-600 bg-white p-2 rounded border'>
-          Полигонов: {polygons.filter(p => p.closed).length} | В процессе:{' '}
-          {isDrawing ? '1' : '0'} | Выбран: {selectedPolygon ? 'Да' : 'Нет'} |
-          Размер: {canvasDimensions.width}×{canvasDimensions.height}
+          Polygons: {polygons.filter(p => p.closed).length} | In progress:{' '}
+          {isDrawing ? '1' : '0'} | Selected: {selectedPolygon ? 'Yes' : 'No'} |
+          Size: {canvasDimensions.width}×{canvasDimensions.height}
           {imageInfo && (
             <span className='ml-2 text-green-600'>
-              | Координаты относительные ✓
+              | Relative coordinates ✓
             </span>
           )}
         </div>
