@@ -1,6 +1,6 @@
 {
   "name": "xpoligon",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "description": "React-based polygon editor for image regions with workplace linking",
   "main": "dist/index.cjs.js",
   "module": "dist/index.es.js",

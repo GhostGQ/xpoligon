@@ -6,7 +6,6 @@ import {
   useImageProcessing,
   useCanvasDimensions,
   usePolygonChanges,
-  useLocalStorage,
 } from '../../shared/lib';
 import {usePolygonLinking} from '../../features/polygon-linking';
 import {PolygonCanvas} from '../../widgets/polygon-canvas';
@@ -19,10 +18,6 @@ export const PolygonEditorPage: React.FC<PolygonEditorProps> = ({
   onSave,
   onChange,
   onError,
-  autoSaveDelay = 1000,
-  enableLocalStorage = true,
-  localStorageKey = 'polygon-editor',
-  localStorageDelay = 500,
   debug = false,
 }) => {
   const canvasDimensions = useCanvasDimensions();
@@ -37,18 +32,7 @@ export const PolygonEditorPage: React.FC<PolygonEditorProps> = ({
   const [isDrawing, setIsDrawing] = useState(false);
   const [selectedPolygon, setSelectedPolygon] = useState<string | null>(null);
 
-  // Интеграция с localStorage
-  const {clearLocalStorage} = useLocalStorage({
-    polygons,
-    setPolygons,
-    initialPolygons,
-    cameraId: camera.id,
-    enabled: enableLocalStorage,
-    storageKey: localStorageKey,
-    autoSaveDelay: localStorageDelay,
-  });
-
-  // Отслеживание изменений полигонов и автосохранение
+  // Отслеживание изменений полигонов (без автосохранения)
   usePolygonChanges({
     polygons,
     cameraId: camera.id,
@@ -56,7 +40,6 @@ export const PolygonEditorPage: React.FC<PolygonEditorProps> = ({
     imageHeight: imageInfo?.height,
     onChange,
     onSave,
-    autoSaveDelay,
   });
 
   const {linkPolygonToItem, unlinkItem} = usePolygonLinking({
@@ -88,9 +71,6 @@ export const PolygonEditorPage: React.FC<PolygonEditorProps> = ({
     setPolygons([]);
     setIsDrawing(false);
     setSelectedPolygon(null);
-    if (enableLocalStorage) {
-      clearLocalStorage();
-    }
   };
 
   const handleLinkPolygonToItem = (workplaceId: string) => {
