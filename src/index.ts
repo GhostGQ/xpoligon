@@ -18,7 +18,6 @@ export {
   useImageProcessing,
   useCanvasDimensions,
   usePolygonChanges,
-  useLocalStorage,
 } from './shared/lib';
 
 // Экспорт UI компонентов

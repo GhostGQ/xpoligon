@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useMemo} from 'react';
 import type {Polygon} from '../../entities/polygon';
 import type {PolygonEditorProps} from '../../shared/types';
 import {
@@ -28,7 +28,32 @@ export const PolygonEditorPage: React.FC<PolygonEditorProps> = ({
     canvasDimensions,
   });
 
-  const [polygons, setPolygons] = useState<Polygon[]>(initialPolygons);
+  // Преобразование абсолютных координат в относительные, если нужно
+  const normalizedPolygons = useMemo(() => {
+    if (!imageInfo?.width || !imageInfo?.height) return initialPolygons;
+    return initialPolygons.map(polygon => {
+      // Если хотя бы одна точка выходит за пределы [0,1], считаем что это абсолютные координаты
+      const isAbsolute = polygon.points.some(pt => pt.x > 1 || pt.y > 1);
+      if (!isAbsolute) return polygon;
+      return {
+        ...polygon,
+        points: polygon.points.map(pt => ({
+          x: pt.x / imageInfo.width,
+          y: pt.y / imageInfo.height,
+        })),
+      };
+    });
+  }, [initialPolygons, imageInfo?.width, imageInfo?.height]);
+
+  const [polygons, setPolygons] = useState<Polygon[]>([]);
+
+  // Инициализация полигонов после загрузки imageInfo
+  useEffect(() => {
+    if (normalizedPolygons.length > 0) {
+      setPolygons(normalizedPolygons);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [imageInfo?.width, imageInfo?.height]);
   const [isDrawing, setIsDrawing] = useState(false);
   const [selectedPolygon, setSelectedPolygon] = useState<string | null>(null);
 
