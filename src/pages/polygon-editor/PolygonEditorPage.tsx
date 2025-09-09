@@ -6,6 +6,7 @@ import {
   useImageProcessing,
   useCanvasDimensions,
   usePolygonChanges,
+  convertPolygonsToRelative,
 } from '../../shared/lib';
 import {usePolygonLinking} from '../../features/polygon-linking';
 import {PolygonCanvas} from '../../widgets/polygon-canvas';
@@ -28,21 +29,10 @@ export const PolygonEditorPage: React.FC<PolygonEditorProps> = ({
     canvasDimensions,
   });
 
-  // Преобразование абсолютных координат в относительные, если нужно
+  // Преобразование абсолютных координат в относительные через библиотечную функцию
   const normalizedPolygons = useMemo(() => {
     if (!imageInfo?.width || !imageInfo?.height) return initialPolygons;
-    return initialPolygons.map(polygon => {
-      // Если хотя бы одна точка выходит за пределы [0,1], считаем что это абсолютные координаты
-      const isAbsolute = polygon.points.some(pt => pt.x > 1 || pt.y > 1);
-      if (!isAbsolute) return polygon;
-      return {
-        ...polygon,
-        points: polygon.points.map(pt => ({
-          x: pt.x / imageInfo.width,
-          y: pt.y / imageInfo.height,
-        })),
-      };
-    });
+    return convertPolygonsToRelative(initialPolygons, imageInfo.width, imageInfo.height);
   }, [initialPolygons, imageInfo?.width, imageInfo?.height]);
 
   const [polygons, setPolygons] = useState<Polygon[]>([]);
@@ -60,11 +50,7 @@ export const PolygonEditorPage: React.FC<PolygonEditorProps> = ({
   // Отслеживание изменений полигонов (без автосохранения)
   usePolygonChanges({
     polygons,
-    cameraId: camera.id,
-    imageWidth: imageInfo?.width,
-    imageHeight: imageInfo?.height,
     onChange,
-    onSave,
   });
 
   const {linkPolygonToItem, unlinkItem} = usePolygonLinking({
@@ -104,6 +90,7 @@ export const PolygonEditorPage: React.FC<PolygonEditorProps> = ({
     }
   };
 
+  // onSave вызывается только вручную по кнопке
   const handleManualSave = () => {
     if (onSave && imageInfo?.width && imageInfo?.height) {
       try {

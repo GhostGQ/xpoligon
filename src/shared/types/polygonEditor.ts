@@ -3,10 +3,11 @@ import type { Workplace } from '../../entities/workplace';
 import type { Polygon } from '../../entities/polygon';
 
 // Данные, которые редактор принимает извне
+// polygons: Polygon[] — точки должны быть в абсолютных координатах (пиксели относительно изображения)
 export interface PolygonEditorData {
   camera: Camera;
   workplaces: Workplace[];
-  polygons: Polygon[];
+  polygons: Polygon[]; // абсолютные координаты (pixels)
 }
 
 // Данные, которые редактор возвращает при сохранении
@@ -30,15 +31,9 @@ export interface PolygonEditorSaveData {
 export interface PolygonEditorProps {
   data: PolygonEditorData;
   loading?: boolean;
-  onSave?: (data: PolygonEditorSaveData) => void | Promise<void>;
-  onChange?: (polygons: Polygon[]) => void; // вызывается при любом изменении полигонов
+  onSave?: (data: PolygonEditorSaveData) => void | Promise<void>; // ручное сохранение по кнопке
+  onChange?: (polygons: Polygon[]) => void; // отслеживание изменений полигонов
   onError?: (error: string) => void;
-  autoSaveDelay?: number; // задержка автосохранения в мс, по умолчанию 1000
-
-  // Настройки localStorage
-  enableLocalStorage?: boolean; // включить сохранение в localStorage, по умолчанию true
-  localStorageKey?: string; // ключ для localStorage, по умолчанию 'polygon-editor'
-  localStorageDelay?: number; // задержка сохранения в localStorage в мс, по умолчанию 500
 
   // Debug mode
   debug?: boolean; // если true, активен console.log
