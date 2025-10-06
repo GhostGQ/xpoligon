@@ -111,7 +111,7 @@ export const ItemsPanel: React.FC<ItemsPanelProps> = ({
           <div>• Left-click - create/select/edit</div>
           <div>• Right-click on a point - remove point</div>
           <div>• Right-click outside the polygon - cancel selection</div>
-          <div>• Delete/Backspace - remove polygon</div>
+          <div>• Delete - remove polygon</div>
         </div>
       </div>
     </div>

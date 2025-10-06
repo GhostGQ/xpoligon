@@ -64,10 +64,10 @@ export const PolygonEditorPage: React.FC<PolygonEditorProps> = ({
     setPolygons,
   });
 
-  // Обработка клавиш Delete и Backspace
+  // Обработка клавиш Delete
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
-      if ((e.key === 'Delete' || e.key === 'Backspace') && selectedPolygon) {
+      if (e.key === 'Delete' && selectedPolygon) {
         e.preventDefault();
         deletePolygon(selectedPolygon);
       }
