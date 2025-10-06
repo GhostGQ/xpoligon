@@ -9,6 +9,7 @@ interface ItemsPanelProps {
   imageInfo: ImageInfo | null;
   onLinkPolygonToItem: (workplaceId: string) => void;
   onUnlinkItem: (workplaceId: string) => void;
+  children?: React.ReactNode;
 }
 
 export const ItemsPanel: React.FC<ItemsPanelProps> = ({
@@ -17,6 +18,7 @@ export const ItemsPanel: React.FC<ItemsPanelProps> = ({
   selectedPolygon,
   onLinkPolygonToItem,
   onUnlinkItem,
+  children,
 }) => {
   // Функция для проверки, привязано ли рабочее место к полигону
   const isWorkplaceLinked = (workplaceId: string) => {
@@ -92,6 +94,9 @@ export const ItemsPanel: React.FC<ItemsPanelProps> = ({
           );
         })}
       </div>
+
+      {/* Helper buttons */}
+      <div>{children}</div>
 
       <div className='pt-4 mt-4 text-xs text-gray-500 border-t'>
         <div className='space-y-1'>

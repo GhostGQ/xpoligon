@@ -34,7 +34,7 @@ export interface PolygonEditorProps {
   onSave?: (data: PolygonEditorSaveData) => void | Promise<void>; // ручное сохранение по кнопке
   onChange?: (polygons: Polygon[]) => void; // отслеживание изменений полигонов
   onError?: (error: string) => void;
-
+  children?: React.ReactNode;
   // Debug mode
   debug?: boolean; // если true, активен console.log
 }

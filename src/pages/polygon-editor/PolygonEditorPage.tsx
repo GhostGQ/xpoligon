@@ -20,6 +20,7 @@ export const PolygonEditorPage: React.FC<PolygonEditorProps> = ({
   onChange,
   onError,
   debug = false,
+  children,
 }) => {
   const canvasDimensions = useCanvasDimensions();
   const {camera, workplaces, polygons: initialPolygons} = data;
@@ -212,7 +213,9 @@ export const PolygonEditorPage: React.FC<PolygonEditorProps> = ({
         imageInfo={imageInfo}
         onLinkPolygonToItem={handleLinkPolygonToItem}
         onUnlinkItem={unlinkItem}
-      />
+      >
+        {children && children}
+      </ItemsPanel>
     </div>
   );
 };
