@@ -24,11 +24,11 @@ export const ItemsPanel: React.FC<ItemsPanelProps> = ({
   };
 
   return (
-    <div className='w-80 bg-gray-50 p-4 rounded-lg flex flex-col'>
-      <h3 className='text-lg font-bold mb-4'>Workplaces</h3>
+    <div className='flex flex-col p-4 rounded-lg w-80 bg-gray-50'>
+      <h3 className='mb-4 text-lg font-bold'>Workplaces</h3>
 
       {selectedPolygon && (
-        <div className='mb-4 p-3 bg-orange-100 rounded border-l-4 border-orange-500'>
+        <div className='p-3 mb-4 bg-orange-100 border-l-4 border-orange-500 rounded'>
           <div className='text-sm font-medium text-orange-800'>
             Polygon selected
           </div>
@@ -39,7 +39,7 @@ export const ItemsPanel: React.FC<ItemsPanelProps> = ({
         </div>
       )}
 
-      <div className='space-y-2 flex-1 overflow-y-auto'>
+      <div className='flex-1 space-y-2 overflow-y-auto'>
         {workplaces.map(workplace => {
           const isLinked = isWorkplaceLinked(workplace.id);
 
@@ -59,7 +59,7 @@ export const ItemsPanel: React.FC<ItemsPanelProps> = ({
                 }
               }}
             >
-              <div className='flex justify-between items-center'>
+              <div className='flex items-center justify-between'>
                 <div>
                   <div className='font-medium'>{workplace.name}</div>
                   {workplace.description && (
@@ -68,7 +68,7 @@ export const ItemsPanel: React.FC<ItemsPanelProps> = ({
                     </div>
                   )}
                   {isLinked && (
-                    <div className='text-sm text-green-600 flex items-center gap-2'>
+                    <div className='flex items-center gap-2 text-sm text-green-600'>
                       <span>✓ Linked to polygon</span>
                       <button
                         onClick={e => {
@@ -93,13 +93,13 @@ export const ItemsPanel: React.FC<ItemsPanelProps> = ({
         })}
       </div>
 
-      <div className='mt-4 pt-4 border-t text-xs text-gray-500'>
+      <div className='pt-4 mt-4 text-xs text-gray-500 border-t'>
         <div className='space-y-1'>
           <div>🟠 Orange - selected polygon</div>
           <div>🟢 Green - linked polygon</div>
           <div>🔵 Blue - regular polygon</div>
         </div>
-        <div className='mt-2 pt-2 border-t'>
+        <div className='pt-2 mt-2 border-t'>
           <div>
             <strong>Controls:</strong>
           </div>

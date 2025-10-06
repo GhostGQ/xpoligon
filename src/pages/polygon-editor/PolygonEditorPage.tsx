@@ -32,7 +32,11 @@ export const PolygonEditorPage: React.FC<PolygonEditorProps> = ({
   // Преобразование абсолютных координат в относительные через библиотечную функцию
   const normalizedPolygons = useMemo(() => {
     if (!imageInfo?.width || !imageInfo?.height) return initialPolygons;
-    return convertPolygonsToRelative(initialPolygons, imageInfo.width, imageInfo.height);
+    return convertPolygonsToRelative(
+      initialPolygons,
+      imageInfo.width,
+      imageInfo.height
+    );
   }, [initialPolygons, imageInfo?.width, imageInfo?.height]);
 
   const [polygons, setPolygons] = useState<Polygon[]>([]);
@@ -131,12 +135,12 @@ export const PolygonEditorPage: React.FC<PolygonEditorProps> = ({
   }
 
   return (
-    <div className='flex gap-4 p-4 h-screen overflow-hidden'>
+    <div className='flex h-screen gap-4 p-4 overflow-hidden'>
       {/* Основная область с canvas */}
-      <div className='flex flex-col gap-4 flex-1'>
-        <div className='bg-gray-100 p-3 rounded-lg flex justify-between items-center'>
+      <div className='flex flex-col flex-1 gap-4'>
+        <div className='flex items-center justify-between p-3 bg-gray-100 rounded-lg'>
           <div>
-            <h2 className='text-lg font-bold mb-1'>{camera.name}</h2>
+            <h2 className='mb-1 text-lg font-bold'>{camera.name}</h2>
             <div className='text-sm text-gray-600'>
               {backgroundImage
                 ? `Loaded image ${imageInfo?.width}×${imageInfo?.height}px`
@@ -152,7 +156,7 @@ export const PolygonEditorPage: React.FC<PolygonEditorProps> = ({
             <Button
               onClick={handleManualSave}
               variant='primary'
-              disabled={polygons.length === 0}
+              // disabled={polygons.length === 0}
             >
               Save now
             </Button>
@@ -171,7 +175,7 @@ export const PolygonEditorPage: React.FC<PolygonEditorProps> = ({
           </div>
         </div>
 
-        <div className='border-2 border-gray-300 rounded-lg overflow-hidden flex-1'>
+        <div className='flex-1 overflow-hidden border-2 border-gray-300 rounded-lg'>
           <PolygonCanvas
             canvasDimensions={canvasDimensions}
             backgroundImage={backgroundImage}
@@ -188,7 +192,7 @@ export const PolygonEditorPage: React.FC<PolygonEditorProps> = ({
           />
         </div>
 
-        <div className='text-sm text-gray-600 bg-white p-2 rounded border'>
+        <div className='p-2 text-sm text-gray-600 bg-white border rounded'>
           Polygons: {polygons.filter(p => p.closed).length} | In progress:{' '}
           {isDrawing ? '1' : '0'} | Selected: {selectedPolygon ? 'Yes' : 'No'} |
           Size: {canvasDimensions.width}×{canvasDimensions.height}
