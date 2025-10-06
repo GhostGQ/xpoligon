@@ -165,7 +165,7 @@ export const PolygonEditorPage: React.FC<PolygonEditorPageProps> = ({
             <Button
               onClick={handleSavePolygons}
               variant='primary'
-              disabled={polygons.length === 0}
+              // disabled={polygons.length === 0}
             >
               Сохранить полигоны
             </Button>
