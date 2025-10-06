@@ -14,10 +14,12 @@ import {Button, Loading} from '../../shared/ui';
 
 interface PolygonEditorPageProps {
   cameraId: string;
+  children?: React.ReactNode;
 }
 
 export const PolygonEditorPage: React.FC<PolygonEditorPageProps> = ({
   cameraId,
+  children,
 }) => {
   const canvasDimensions = useCanvasDimensions();
 
@@ -221,7 +223,9 @@ export const PolygonEditorPage: React.FC<PolygonEditorPageProps> = ({
         imageInfo={imageInfo}
         onLinkPolygonToItem={handleLinkPolygonToItem}
         onUnlinkItem={unlinkItem}
-      />
+      >
+        {children && children}
+      </ItemsPanel>
     </div>
   );
 };

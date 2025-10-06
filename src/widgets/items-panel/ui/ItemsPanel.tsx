@@ -10,6 +10,7 @@ interface ItemsPanelProps {
   imageInfo: ImageInfo | null;
   onLinkPolygonToItem: (workplaceId: string) => void;
   onUnlinkItem: (workplaceId: string) => void;
+  children?: React.ReactNode;
 }
 
 export const ItemsPanel: React.FC<ItemsPanelProps> = ({
@@ -18,6 +19,7 @@ export const ItemsPanel: React.FC<ItemsPanelProps> = ({
   selectedPolygon,
   onLinkPolygonToItem,
   onUnlinkItem,
+  children,
 }) => {
   // Функция для проверки, привязано ли рабочее место к полигону
   const isWorkplaceLinked = (workplaceId: string) => {
@@ -34,16 +36,16 @@ export const ItemsPanel: React.FC<ItemsPanelProps> = ({
             Полигон выбран
           </div>
           <div className='text-xs text-orange-600'>
-            Кликните по рабочему месту для привязки, Delete для удаления или ПКМ вне
-            полигона для отмены выделения
+            Кликните по рабочему месту для привязки, Delete для удаления или ПКМ
+            вне полигона для отмены выделения
           </div>
         </div>
       )}
 
-      <div className='space-y-2 flex-1 overflow-y-auto'>
+      <div className='space-y-2 flex-1 overflow-y-auto pb-2'>
         {workplaces.map(workplace => {
           const isLinked = isWorkplaceLinked(workplace.id);
-          
+
           return (
             <div
               key={workplace.id}
@@ -64,7 +66,9 @@ export const ItemsPanel: React.FC<ItemsPanelProps> = ({
                 <div>
                   <div className='font-medium'>{workplace.name}</div>
                   {workplace.description && (
-                    <div className='text-sm text-gray-500'>{workplace.description}</div>
+                    <div className='text-sm text-gray-500'>
+                      {workplace.description}
+                    </div>
                   )}
                   {isLinked && (
                     <div className='text-sm text-green-600 flex items-center gap-2'>
@@ -91,6 +95,9 @@ export const ItemsPanel: React.FC<ItemsPanelProps> = ({
           );
         })}
       </div>
+
+      {/* Helper buttons */}
+      <div>{children}</div>
 
       <div className='mt-4 pt-4 border-t text-xs text-gray-500'>
         <div className='space-y-1'>
