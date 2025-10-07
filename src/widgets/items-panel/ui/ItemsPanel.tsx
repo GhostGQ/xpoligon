@@ -62,19 +62,22 @@ export const ItemsPanel: React.FC<ItemsPanelProps> = ({
               }}
             >
               <div className='flex items-center justify-between'>
-                <div className='space-y-1 flex flex-col items-start'>
+                <div className='flex flex-col items-start space-y-1'>
                   <div className='font-medium'>{workplace.name}</div>
                   <div className='flex flex-wrap gap-1'>
                     {workplace.employees &&
                       workplace.employees.length > 0 &&
                       workplace.employees?.map(emp => (
-                        <div className='text-sm text-gray-600 bg-gray-50 px-2 mt-1 rounded-lg'>
+                        <div
+                          key={emp.id}
+                          className='px-2 mt-1 text-sm text-gray-600 rounded-lg bg-gray-50'
+                        >
                           {emp.name}
                         </div>
                       ))}
                   </div>
                   {isLinked && (
-                    <div className='text-sm text-green-600 flex items-center gap-2'>
+                    <div className='flex items-center gap-2 text-sm text-green-600'>
                       <span>✓ Привязан к полигону</span>
                       <button
                         onClick={e => {
