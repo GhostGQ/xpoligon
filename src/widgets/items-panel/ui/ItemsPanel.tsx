@@ -63,13 +63,17 @@ export const ItemsPanel: React.FC<ItemsPanelProps> = ({
               }}
             >
               <div className='flex justify-between items-center'>
-                <div>
+                <div className='space-y-1 flex flex-col items-start'>
                   <div className='font-medium'>{workplace.name}</div>
-                  {workplace.description && (
-                    <div className='text-sm text-gray-500'>
-                      {workplace.description}
-                    </div>
-                  )}
+                  <div className='flex flex-wrap gap-1'>
+                    {workplace.employees &&
+                      workplace.employees.length > 0 &&
+                      workplace.employees?.map(emp => (
+                        <div className='text-sm text-gray-600 bg-gray-50 px-2 mt-1 rounded-lg'>
+                          {emp.name}
+                        </div>
+                      ))}
+                  </div>
                   {isLinked && (
                     <div className='text-sm text-green-600 flex items-center gap-2'>
                       <span>✓ Привязан к полигону</span>

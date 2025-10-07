@@ -27,14 +27,14 @@ const mockCameras: Camera[] = [
 // Моковые данные рабочих мест для разных камер
 const mockWorkplaces: Record<string, Workplace[]> = {
   cam1: [
-    { id: 'wp1-1', name: 'Стол № 1' },
-    { id: 'wp1-2', name: 'Стол № 2' },
-    { id: 'wp1-3', name: 'Стол № 3' },
-    { id: 'wp1-4', name: 'Стол № 4' },
-    { id: 'wp1-5', name: 'Стол № 5' },
-    { id: 'wp1-6', name: 'Стол № 6' },
-    { id: 'wp1-7', name: 'Стол № 7' },
-    { id: 'wp1-8', name: 'Стол № 8' },
+    { id: 'wp1-1', name: 'Стол № 1', employees: [{ id: 'emp1', name: 'Сотрудник 1' }, { id: 'emp1', name: 'Сотрудник 2' }, { id: 'emp1', name: 'Сотрудник 3' }] },
+    { id: 'wp1-2', name: 'Стол № 2', employees: [{ id: 'emp2', name: 'Сотрудник 2' }] },
+    { id: 'wp1-3', name: 'Стол № 3', employees: [{ id: 'emp3', name: 'Сотрудник 3' }] },
+    { id: 'wp1-4', name: 'Стол № 4', employees: [{ id: 'emp4', name: 'Сотрудник 4' }] },
+    { id: 'wp1-5', name: 'Стол № 5', employees: [{ id: 'emp5', name: 'Сотрудник 5' }] },
+    { id: 'wp1-6', name: 'Стол № 6', employees: [{ id: 'emp6', name: 'Сотрудник 6' }] },
+    { id: 'wp1-7', name: 'Стол № 7', employees: [{ id: 'emp7', name: 'Сотрудник 7' }] },
+    { id: 'wp1-8', name: 'Стол № 8', employees: [{ id: 'emp8', name: 'Сотрудник 8' }] },
   ],
   cam2: [
     { id: 'wp2-1', name: 'VIP стол № 1' },
@@ -100,28 +100,28 @@ export const cameraApi = {
 
   // Сохранить полигоны для камеры
   savePolygonsForCamera: async (
-    cameraId: string, 
-    polygons: Polygon[], 
-    imageWidth?: number, 
+    cameraId: string,
+    polygons: Polygon[],
+    imageWidth?: number,
     imageHeight?: number
   ): Promise<{ success: boolean; message: string }> => {
     await new Promise(resolve => setTimeout(resolve, 300)); // имитация запроса на сервер
-    
+
     // Сохраняем в localStorage
     savePolygonsToStorage(cameraId, polygons);
-    
+
     // Функция для преобразования относительных координат в пиксельные
-    const convertToPixels = (relativePoints: Array<{x: number, y: number}>) => {
+    const convertToPixels = (relativePoints: Array<{ x: number, y: number }>) => {
       if (!imageWidth || !imageHeight) {
         return relativePoints; // Если нет размеров изображения, возвращаем как есть
       }
-      
+
       return relativePoints.map(point => ({
         x: Math.round(point.x * imageWidth),
         y: Math.round(point.y * imageHeight)
       }));
     };
-    
+
     console.log(`Сохранение полигонов для камеры ${cameraId}:`, {
       cameraId,
       imageSize: imageWidth && imageHeight ? `${imageWidth}x${imageHeight}px` : 'unknown',
